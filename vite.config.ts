@@ -7,6 +7,8 @@ import { bunny } from 'laravel-vite-plugin/fonts';
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
+const isVercelBuild = process.env.VERCEL === '1' || process.env.CI === 'true';
+
 export default defineConfig({
     server: {
         host: '127.0.0.1',
@@ -39,8 +41,8 @@ export default defineConfig({
             },
         }),
         tailwindcss(),
-        wayfinder({
+        !isVercelBuild && wayfinder({
             formVariants: true,
         }),
-    ],
+    ].filter(Boolean),
 });
