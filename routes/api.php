@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\HeroController;
 use App\Http\Controllers\Api\InquiryController;
 use App\Http\Controllers\Api\ListingController;
 use App\Http\Controllers\Api\MakeController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\OfferController;
@@ -112,6 +113,10 @@ Route::prefix('v1')->group(function () {
         Route::post('messages/send', [MessageController::class, 'send']);
         Route::post('conversations/{id}/reply', [MessageController::class, 'reply']);
         Route::post('conversations/{id}/read', [MessageController::class, 'markRead']);
+
+        // Orders
+        Route::get('orders', [OrderController::class, 'index']);
+        Route::get('orders/{id}', [OrderController::class, 'show']);
 
         // Admin User Management (super-admin & admin only)
         Route::middleware('role:super-admin,admin')->group(function () {
