@@ -89,9 +89,9 @@ Route::prefix('v1')->group(function () {
         Route::post('products/{id}/images', [ProductController::class, 'uploadImage']);
 
         // Saved Listings
-        Route::get('saved', [SavedListingController::class, 'index']);
-        Route::post('saved', [SavedListingController::class, 'store']);
-        Route::delete('saved/{id}', [SavedListingController::class, 'destroy']);
+        Route::get('saved-listings', [SavedListingController::class, 'index']);
+        Route::post('saved-listings', [SavedListingController::class, 'store']);
+        Route::delete('saved-listings/{id}', [SavedListingController::class, 'destroy']);
 
         // Inquiries
         Route::get('inquiries', [InquiryController::class, 'index']);

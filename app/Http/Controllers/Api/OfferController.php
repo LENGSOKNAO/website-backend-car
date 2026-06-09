@@ -34,7 +34,9 @@ class OfferController extends ApiController
             'down_payment' => 'nullable|numeric|min:0',
             'loan_term' => 'nullable|integer|min:1',
             'accessories' => 'nullable|array',
-            'accessories.*' => 'string',
+            'accessories.*.id' => 'string',
+            'accessories.*.name' => 'string',
+            'accessories.*.price' => 'numeric|min:0',
         ]);
 
         if ($validator->fails()) {
