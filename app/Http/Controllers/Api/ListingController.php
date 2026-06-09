@@ -54,9 +54,9 @@ class ListingController extends ApiController
             });
         }
 
-        $listings = $query->latest()->paginate($request->per_page ?? 15);
+        $listings = $query->latest()->get();
 
-        return $this->success($listings);
+        return response()->json(['data' => $listings]);
     }
 
     public function show(string $id)
