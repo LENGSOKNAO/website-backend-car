@@ -39,9 +39,8 @@ export default defineConfig({
             },
         }),
         tailwindcss(),
-        !process.env.VERCEL &&
-            wayfinder({
-                formVariants: true,
-            }),
-    ].filter(Boolean),
+        wayfinder({
+            formVariants: true,
+        }),
+    ],
 });

@@ -4,15 +4,11 @@
   "functions": {
     "api/index.php": { "runtime": "vercel-php@0.9.0" }
   },
-  "buildCommand": "curl -sS https://getcomposer.org/installer | php -- --install-dir=/tmp --filename=composer && /tmp/composer install --no-dev --optimize-autoloader && php artisan migrate --force && npm install && npm run build",
+  "buildCommand": "bash ./vercel-build.sh",
   "routes": [
     {
       "src": "/build/(.*)",
-      "dest": "/build/$1"
-    },
-    {
-      "src": "/(!storage/)(.+\\.(?:css|js|png|jpg|jpeg|gif|svg|ico|ttf|woff|woff2|eot|otf|webp|avif|txt))$",
-      "dest": "/public/$2"
+      "dest": "/public/build/$1"
     },
     {
       "src": "/storage/(.*)",
@@ -23,6 +19,10 @@
       "dest": "/api/index.php"
     },
     {
+      "src": "/(.+\\.(?:css|js|png|jpg|jpeg|gif|svg|ico|ttf|woff|woff2|eot|otf|webp|avif|txt))$",
+      "dest": "/public/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/api/index.php"
     }
@@ -30,7 +30,7 @@
   "outputDirectory": "public",
   "env": {
     "APP_ENV": "production",
-    "APP_DEBUG": "true",
+    "APP_DEBUG": "false",
     "APP_KEY": "base64:7rLQCJbiqCY4R4LAGihvLX4JAl9vK/bcZMojXcB0tSU=",
     "APP_CONFIG_CACHE": "/tmp/config.php",
     "APP_EVENTS_CACHE": "/tmp/events.php",
@@ -38,7 +38,8 @@
     "APP_ROUTES_CACHE": "/tmp/routes.php",
     "APP_SERVICES_CACHE": "/tmp/services.php",
     "VIEW_COMPILED_PATH": "/tmp",
-    "PUBLIC_DISK_DRIVER": "local",
+    "FILESYSTEM_DISK": "local",
+    "LOCAL_STORAGE_PATH": "/tmp/storage/app/private",
     "PUBLIC_STORAGE_PATH": "/tmp/storage/app/public",
     "AWS_ACCESS_KEY_ID": "",
     "AWS_SECRET_ACCESS_KEY": "",
@@ -58,6 +59,16 @@
     "DB_PASSWORD": "npg_K2dZURDFu7OY",
     "DB_SSLMODE": "require",
     "JWT_SECRET": "eVq0DjLGq2Hap4imuIkVTn8XfHcnrrP0BWNIW92jelTy2u9nXSfoWTCpWu1KDppL",
-    "APP_URL": "https://admin-car-2dr5.vercel.app"
+    "APP_URL": "https://admin-car-2dr5.vercel.app",
+    "BROADCAST_DRIVER": "pusher",
+    "PUSHER_APP_ID": "2157656",
+    "PUSHER_APP_KEY": "e9a1422c417cfae12203",
+    "PUSHER_APP_SECRET": "119e0509db3eb294ccad",
+    "PUSHER_HOST": "api.pusherapp.com",
+    "PUSHER_PORT": "443",
+    "PUSHER_SCHEME": "https",
+    "PUSHER_CLUSTER": "ap1",
+    "VITE_PUSHER_APP_KEY": "e9a1422c417cfae12203",
+    "VITE_PUSHER_CLUSTER": "ap1"
   }
 }
