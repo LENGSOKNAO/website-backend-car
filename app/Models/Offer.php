@@ -20,6 +20,10 @@ class Offer extends Model
         'message',
         'status',
         'expires_at',
+        'payment_method',
+        'down_payment',
+        'loan_term',
+        'accessories',
     ];
 
     protected function casts(): array
@@ -27,6 +31,8 @@ class Offer extends Model
         return [
             'offered_price' => 'decimal:2',
             'expires_at' => 'datetime',
+            'down_payment' => 'decimal:2',
+            'accessories' => 'array',
         ];
     }
 

@@ -117,6 +117,7 @@ Route::prefix('v1')->group(function () {
         // Orders
         Route::get('orders', [OrderController::class, 'index']);
         Route::get('orders/{id}', [OrderController::class, 'show']);
+        Route::post('orders/{id}/pay-installment', [OrderController::class, 'payInstallment']);
 
         // Admin User Management (super-admin & admin only)
         Route::middleware('role:super-admin,admin')->group(function () {

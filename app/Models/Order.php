@@ -24,6 +24,12 @@ class Order extends Model
         'notes',
         'placed_at',
         'completed_at',
+        'payment_method',
+        'down_payment',
+        'loan_term',
+        'monthly_payment',
+        'accessories',
+        'next_payment_due_at',
     ];
 
     protected function casts(): array
@@ -35,6 +41,10 @@ class Order extends Model
             'total' => 'decimal:2',
             'placed_at' => 'datetime',
             'completed_at' => 'datetime',
+            'down_payment' => 'decimal:2',
+            'monthly_payment' => 'decimal:2',
+            'accessories' => 'array',
+            'next_payment_due_at' => 'datetime',
         ];
     }
 
@@ -80,5 +90,55 @@ class Order extends Model
     public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function installments(): HasMany
+    {
+        return $this->hasMany(OrderInstallment::class)->orderBy('month_number');
+    }
+
+    public function createInstallments(): void
+    {
+        if (!$this->loan_term || !$this->monthly_payment) {
+            return;
+        }
+
+        $startDate = $this->next_payment_due_at ?? now()->addMonth();
+
+        for ($i = 1; $i <= $this->loan_term; $i++) {
+            $this->installments()->create([
+                'month_number' => $i,
+                'amount' => $this->monthly_payment,
+                'due_at' => $startDate->copy()->addMonths($i - 1),
+                'status' => 'pending',
+            ]);
+        }
+
+        $this->update(['next_payment_due_at' => $startDate]);
+    }
+
+    public function getNextInstallment(): ?OrderInstallment
+    {
+        return $this->installments()->where('status', 'pending')->orderBy('month_number')->first();
+    }
+
+    public function markInstallmentPaid(int $monthNumber, string $transactionId): void
+    {
+        $installment = $this->installments()->where('month_number', $monthNumber)->first();
+        
+        if ($installment && $installment->status !== 'paid') {
+            $installment->update([
+                'status' => 'paid',
+                'paid_at' => now(),
+                'transaction_id' => $transactionId,
+            ]);
+
+            $nextDue = $this->installments()->where('status', 'pending')->orderBy('month_number')->first();
+            $this->update(['next_payment_due_at' => $nextDue?->due_at]);
+
+            if (!$this->installments()->where('status', 'pending')->exists()) {
+                $this->update(['status' => 'completed', 'completed_at' => now()]);
+            }
+        }
     }
 }

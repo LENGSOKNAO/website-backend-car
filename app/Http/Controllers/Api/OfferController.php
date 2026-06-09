@@ -30,6 +30,11 @@ class OfferController extends ApiController
             'listing_id' => 'required|exists:car_listings,id',
             'offered_price' => 'required|numeric|min:0',
             'message' => 'nullable|string|max:1000',
+            'payment_method' => 'nullable|in:finance,cash',
+            'down_payment' => 'nullable|numeric|min:0',
+            'loan_term' => 'nullable|integer|min:1',
+            'accessories' => 'nullable|array',
+            'accessories.*' => 'string',
         ]);
 
         if ($validator->fails()) {
@@ -44,6 +49,10 @@ class OfferController extends ApiController
             'seller_id' => $listing->seller_id,
             'offered_price' => $request->offered_price,
             'message' => $request->message,
+            'payment_method' => $request->payment_method,
+            'down_payment' => $request->down_payment,
+            'loan_term' => $request->loan_term,
+            'accessories' => $request->accessories,
             'status' => 'pending',
             'expires_at' => now()->addDays(3),
         ]);
@@ -79,18 +88,47 @@ class OfferController extends ApiController
                 ->whereIn('status', ['pending', 'confirmed'])
                 ->update(['status' => 'cancelled']);
 
-            $order = Order::create([
+            $accessoriesTotal = collect($offer->accessories ?? [])->sum(fn ($a) => $a['price'] ?? 0);
+            $totalPrice = $offer->offered_price + $accessoriesTotal;
+
+            $orderData = [
                 'buyer_id' => $offer->buyer_id,
                 'seller_id' => $offer->seller_id,
                 'order_number' => 'ORD-'.strtoupper(uniqid()),
                 'status' => 'confirmed',
-                'subtotal' => $offer->offered_price,
+                'subtotal' => $totalPrice,
                 'tax' => 0,
                 'fees' => 0,
-                'total' => $offer->offered_price,
-                'notes' => null,
+                'total' => $totalPrice,
+                'notes' => json_encode([
+                    'payment_method' => $offer->payment_method,
+                    'down_payment' => $offer->down_payment,
+                    'loan_term' => $offer->loan_term,
+                    'accessories' => $offer->accessories,
+                ]),
                 'placed_at' => now(),
-            ]);
+            ];
+
+            if ($offer->payment_method === 'finance' && $offer->loan_term) {
+                $orderData['payment_method'] = 'finance';
+                $orderData['down_payment'] = $offer->down_payment ?? 0;
+                $orderData['loan_term'] = $offer->loan_term;
+                $financedAmount = $totalPrice - ($offer->down_payment ?? 0);
+                $monthlyRate = 0.069 / 12;
+                $orderData['monthly_payment'] = round(
+                    $financedAmount * ($monthlyRate * pow(1 + $monthlyRate, $offer->loan_term)) / (pow(1 + $monthlyRate, $offer->loan_term) - 1),
+                    2
+                );
+                $orderData['accessories'] = $offer->accessories;
+                $orderData['next_payment_due_at'] = now()->addMonth();
+            } elseif ($offer->payment_method === 'cash') {
+                $orderData['payment_method'] = 'cash';
+                $orderData['down_payment'] = $totalPrice;
+                $orderData['status'] = 'completed';
+                $orderData['completed_at'] = now();
+            }
+
+            $order = Order::create($orderData);
 
             OrderItem::create([
                 'order_id' => $order->id,
@@ -99,6 +137,10 @@ class OfferController extends ApiController
                 'price' => $offer->offered_price,
                 'condition' => $offer->listing->condition,
             ]);
+
+            if ($offer->payment_method === 'finance' && $offer->loan_term) {
+                $order->createInstallments();
+            }
         });
 
         return $this->success($offer, 'Offer accepted');
