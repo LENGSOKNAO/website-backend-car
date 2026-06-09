@@ -1,0 +1,63 @@
+{
+  "version": 2,
+  "framework": null,
+  "functions": {
+    "api/index.php": { "runtime": "vercel-php@0.9.0" }
+  },
+  "buildCommand": "npm install && npm run build",
+  "routes": [
+    {
+      "src": "/build/(.*)",
+      "dest": "/build/$1"
+    },
+    {
+      "src": "/(!storage/)(.+\\.(?:css|js|png|jpg|jpeg|gif|svg|ico|ttf|woff|woff2|eot|otf|webp|avif|txt))$",
+      "dest": "/public/$2"
+    },
+    {
+      "src": "/storage/(.*)",
+      "dest": "/api/index.php"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.php"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.php"
+    }
+  ],
+  "outputDirectory": "public",
+  "env": {
+    "APP_ENV": "production",
+    "APP_DEBUG": "true",
+    "APP_KEY": "base64:7rLQCJbiqCY4R4LAGihvLX4JAl9vK/bcZMojXcB0tSU=",
+    "APP_CONFIG_CACHE": "/tmp/config.php",
+    "APP_EVENTS_CACHE": "/tmp/events.php",
+    "APP_PACKAGES_CACHE": "/tmp/packages.php",
+    "APP_ROUTES_CACHE": "/tmp/routes.php",
+    "APP_SERVICES_CACHE": "/tmp/services.php",
+    "VIEW_COMPILED_PATH": "/tmp",
+    "PUBLIC_DISK_DRIVER": "local",
+    "PUBLIC_STORAGE_PATH": "/tmp/storage/app/public",
+    "AWS_ACCESS_KEY_ID": "",
+    "AWS_SECRET_ACCESS_KEY": "",
+    "AWS_DEFAULT_REGION": "us-east-1",
+    "AWS_BUCKET": "",
+    "AWS_URL": "",
+    "BLOB_READ_WRITE_TOKEN": "vercel_blob_rw_wP781yxW0ced1ZTA_goGEahSqrry9s3ycHPn9vhqc3uyW6c",
+    "BLOB_STORE_ID": "store_wP781yxW0ced1ZTA",
+    "CACHE_STORE": "array",
+    "LOG_CHANNEL": "stderr",
+    "SESSION_DRIVER": "cookie",
+    "DB_CONNECTION": "pgsql",
+    "DB_HOST": "ep-hidden-resonance-ap5l7tt5.c-7.us-east-1.aws.neon.tech",
+    "DB_PORT": "5432",
+    "DB_DATABASE": "neondb",
+    "DB_USERNAME": "neondb_owner",
+    "DB_PASSWORD": "npg_K2dZURDFu7OY",
+    "DB_SSLMODE": "require",
+    "JWT_SECRET": "eVq0DjLGq2Hap4imuIkVTn8XfHcnrrP0BWNIW92jelTy2u9nXSfoWTCpWu1KDppL",
+    "APP_URL": "https://admin-car-2dr5.vercel.app"
+  }
+}
