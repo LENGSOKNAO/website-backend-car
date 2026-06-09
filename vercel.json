@@ -4,7 +4,7 @@
   "functions": {
     "api/index.php": { "runtime": "vercel-php@0.9.0" }
   },
-  "buildCommand": "cp .env.example .env 2>/dev/null || true; curl -sS https://getcomposer.org/installer | php -- --install-dir=/tmp --filename=composer; /tmp/composer install --no-dev --optimize-autoloader; php artisan key:generate --force; mkdir -p storage/app/public storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache; php artisan migrate --force || true; npm install; npm run build; php artisan config:cache; php artisan route:cache; php artisan view:cache",
+  "buildCommand": "sh vercel-build.sh",
   "routes": [
     {
       "src": "/build/(.*)",
@@ -59,7 +59,7 @@
     "DB_PASSWORD": "npg_K2dZURDFu7OY",
     "DB_SSLMODE": "require",
     "JWT_SECRET": "eVq0DjLGq2Hap4imuIkVTn8XfHcnrrP0BWNIW92jelTy2u9nXSfoWTCpWu1KDppL",
-    "APP_URL": "https://admin-car-2dr5.vercel.app",
+    "APP_URL": "https://store-car-seven.vercel.app",
     "BROADCAST_DRIVER": "pusher",
     "PUSHER_APP_ID": "2157656",
     "PUSHER_APP_KEY": "e9a1422c417cfae12203",
