@@ -91,6 +91,7 @@ class OrderController extends Controller
                 $q->with(['make', 'model', 'category', 'primaryImage']);
             },
             'transactions',
+            'installments',
         ])->where('seller_id', auth()->id())->findOrFail($id);
 
         $order->items->each(function ($item) {
