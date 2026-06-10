@@ -36,28 +36,23 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\SellerDashboardUpdated::class => [],
     ];
 
-    /**
+/**
      * Register any events for your application.
      */
-public function boot(): void
+    public function boot(): void
     {
         parent::boot();
 
+        // Process the $broadcast array to register listeners and setup broadcasting
         $this->booting(function () {
             foreach ($this->broadcast as $event => $listeners) {
-                foreach (array_unique($listeners, SORT_REGULAR) as $listener) {
-                    Event::listen($event, $listener);
-                }
+                if (!empty($listeners) && is_array($listeners)) {
+                    foreach (array_unique($listeners, SORT_REGULAR) as $listener) {
+                        if (class_exists($event) && class_exists($listener)) {
+                            Event::listen($event, $listener);
+}
             }
         });
     }
-
-            // Setup broadcasting if the event implements ShouldBroadcast
-            if (class_exists($event) && is_subclass_of($event, 'Illuminate\Contracts\Broadcasting\ShouldBroadcast')) {
-                // The event's broadcastOn() method will be automatically called by Laravel's
-                // broadcasting system when the event is dispatched
-                // This ensures events in $broadcast array are properly broadcast
-            }
-        }
-    }
+}
 }
