@@ -19,7 +19,7 @@ class OrderController extends Controller
         $preOrders = collect();
 
         if ($tab === 'orders' || ! $request->has('tab')) {
-            $orderQuery = Order::with('buyer', 'items.listing.make', 'items.listing.model', 'items.listing.primaryImage')
+            $orderQuery = Order::with('buyer', 'items.listing.make', 'items.listing.model', 'items.listing.primaryImage', 'installments')
                 ->where('seller_id', auth()->id());
 
             if ($request->search) {
@@ -47,6 +47,12 @@ class OrderController extends Controller
                         : null;
                     unset($item->listing->primaryImage);
                 });
+                
+                // Add installment summary for finance orders
+                if ($order->payment_method === 'finance' && $order->loan_term) {
+                    $order->installment_summary = $order->installment_summary;
+                    $order->installment_months = $order->installment_months;
+                }
             });
         }
 
