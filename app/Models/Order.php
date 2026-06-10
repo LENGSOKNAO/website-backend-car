@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Schema;
 
 class Order extends Model
 {
@@ -103,18 +104,34 @@ class Order extends Model
             return;
         }
 
-        $startDate = $this->next_payment_due_at ?? now()->addMonth();
+        try {
+            if (!Schema::hasTable('order_installments')) {
+                \Log::warning('order_installments table does not exist, skipping installment creation', [
+                    'order_id' => $this->id,
+                    'loan_term' => $this->loan_term,
+                ]);
+                return;
+            }
 
-        for ($i = 1; $i <= $this->loan_term; $i++) {
-            $this->installments()->create([
-                'month_number' => $i,
-                'amount' => $this->monthly_payment,
-                'due_at' => $startDate->copy()->addMonths($i - 1),
-                'status' => 'pending',
+            $startDate = $this->next_payment_due_at ?? now()->addMonth();
+
+            for ($i = 1; $i <= $this->loan_term; $i++) {
+                $this->installments()->create([
+                    'month_number' => $i,
+                    'amount' => $this->monthly_payment,
+                    'due_at' => $startDate->copy()->addMonths($i - 1),
+                    'status' => 'pending',
+                ]);
+            }
+
+            $this->update(['next_payment_due_at' => $startDate]);
+        } catch (\Throwable $e) {
+            \Log::error('Failed to create installments', [
+                'order_id' => $this->id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
             ]);
         }
-
-        $this->update(['next_payment_due_at' => $startDate]);
     }
 
     public function getNextInstallment(): ?OrderInstallment

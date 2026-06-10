@@ -10,6 +10,7 @@ use App\Models\PreOrder;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class OrderController extends ApiController
@@ -48,64 +49,75 @@ class OrderController extends ApiController
         $accessoriesTotal = collect($request->accessories ?? [])->sum(fn ($a) => $a['price'] ?? 0);
         $totalPrice = $request->price + $accessoriesTotal;
 
-        $order = DB::transaction(function () use ($request, $listing, $totalPrice) {
-            $listing->update(['status' => 'out_of_stock', 'total' => 0]);
+        try {
+            $order = DB::transaction(function () use ($request, $listing, $totalPrice) {
+                $listing->update(['status' => 'out_of_stock', 'total' => 0]);
 
-            PreOrder::where('listing_id', $listing->id)
-                ->whereIn('status', ['pending', 'confirmed'])
-                ->update(['status' => 'cancelled']);
+                PreOrder::where('listing_id', $listing->id)
+                    ->whereIn('status', ['pending', 'confirmed'])
+                    ->update(['status' => 'cancelled']);
 
-            $orderData = [
-                'buyer_id' => auth()->id(),
-                'seller_id' => $listing->seller_id,
-                'order_number' => 'ORD-'.strtoupper(uniqid()),
-                'subtotal' => $totalPrice,
-                'tax' => 0,
-                'fees' => 0,
-                'total' => $totalPrice,
-                'notes' => $request->message,
-                'placed_at' => now(),
-            ];
+                $orderData = [
+                    'buyer_id' => auth()->id(),
+                    'seller_id' => $listing->seller_id,
+                    'order_number' => 'ORD-'.strtoupper(uniqid()),
+                    'subtotal' => $totalPrice,
+                    'tax' => 0,
+                    'fees' => 0,
+                    'total' => $totalPrice,
+                    'notes' => $request->message,
+                    'placed_at' => now(),
+                ];
 
-            if ($request->payment_method === 'finance' && $request->loan_term) {
-                $orderData['status'] = 'confirmed';
-                $orderData['payment_method'] = 'finance';
-                $orderData['down_payment'] = $request->down_payment ?? 0;
-                $orderData['loan_term'] = $request->loan_term;
-                $financedAmount = $totalPrice - ($request->down_payment ?? 0);
-                $monthlyRate = 0.069 / 12;
-                $orderData['monthly_payment'] = round(
-                    $financedAmount * ($monthlyRate * pow(1 + $monthlyRate, $request->loan_term)) / (pow(1 + $monthlyRate, $request->loan_term) - 1),
-                    2
-                );
-                $orderData['accessories'] = $request->accessories;
-                $orderData['next_payment_due_at'] = now()->addMonth();
-            } elseif ($request->payment_method === 'cash') {
-                $orderData['status'] = 'completed';
-                $orderData['payment_method'] = 'cash';
-                $orderData['down_payment'] = $totalPrice;
-                $orderData['completed_at'] = now();
-            } else {
-                $orderData['status'] = 'confirmed';
-            }
+                if ($request->payment_method === 'finance' && $request->loan_term) {
+                    $orderData['status'] = 'confirmed';
+                    $orderData['payment_method'] = 'finance';
+                    $orderData['down_payment'] = $request->down_payment ?? 0;
+                    $orderData['loan_term'] = $request->loan_term;
+                    $financedAmount = $totalPrice - ($request->down_payment ?? 0);
+                    $monthlyRate = 0.069 / 12;
+                    $orderData['monthly_payment'] = round(
+                        $financedAmount * ($monthlyRate * pow(1 + $monthlyRate, $request->loan_term)) / (pow(1 + $monthlyRate, $request->loan_term) - 1),
+                        2
+                    );
+                    $orderData['accessories'] = $request->accessories;
+                    $orderData['next_payment_due_at'] = now()->addMonth();
+                } elseif ($request->payment_method === 'cash') {
+                    $orderData['status'] = 'completed';
+                    $orderData['payment_method'] = 'cash';
+                    $orderData['down_payment'] = $totalPrice;
+                    $orderData['completed_at'] = now();
+                } else {
+                    $orderData['status'] = 'confirmed';
+                }
 
-            $order = Order::create($orderData);
+                $order = Order::create($orderData);
 
-            OrderItem::create([
-                'order_id' => $order->id,
-                'listing_id' => $listing->id,
-                'price' => $request->price,
-                'condition' => $listing->condition,
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'listing_id' => $listing->id,
+                    'price' => $request->price,
+                    'condition' => $listing->condition,
+                ]);
+
+                if ($request->payment_method === 'finance' && $request->loan_term) {
+                    $order->createInstallments();
+                }
+
+                return $order;
+            });
+
+            return $this->success($order->load('items.listing.make', 'items.listing.model'), 'Order placed', 201);
+        } catch (\Throwable $e) {
+            Log::error('Order creation failed', [
+                'user_id' => auth()->id(),
+                'listing_id' => $request->listing_id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
             ]);
 
-            if ($request->payment_method === 'finance' && $request->loan_term) {
-                $order->createInstallments();
-            }
-
-            return $order;
-        });
-
-        return $this->success($order->load('items.listing.make', 'items.listing.model'), 'Order placed', 201);
+            return $this->error('Failed to create order: ' . $e->getMessage(), 500);
+        }
     }
 
     public function show(string $id)
