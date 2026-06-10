@@ -48,18 +48,21 @@ class AppServiceProvider extends ServiceProvider
 
         try {
             \Illuminate\Support\Facades\DB::select('SELECT 1 FROM stored_files LIMIT 1');
-        } catch (\Exception) {
-            \Illuminate\Support\Facades\DB::statement('
-                CREATE TABLE IF NOT EXISTS stored_files (
-                    id UUID PRIMARY KEY,
-                    original_name VARCHAR(255) NOT NULL,
-                    mime_type VARCHAR(127) NOT NULL,
-                    size INTEGER NOT NULL,
-                    data BYTEA NOT NULL,
-                    created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-                    updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
-                )
-            ');
+        } catch (\Exception $e) {
+            try {
+                \Illuminate\Support\Facades\DB::statement('
+                    CREATE TABLE IF NOT EXISTS stored_files (
+                        id UUID PRIMARY KEY,
+                        original_name VARCHAR(255) NOT NULL,
+                        mime_type VARCHAR(127) NOT NULL,
+                        size INTEGER NOT NULL,
+                        data BYTEA NOT NULL,
+                        created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+                        updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+                    )
+                ');
+            } catch (\Exception) {
+            }
         }
 
         // Only register broadcasting listeners if the Pusher package is available
