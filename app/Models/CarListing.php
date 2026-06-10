@@ -104,11 +104,6 @@ class CarListing extends Model
         return $this->hasMany(Inquiry::class, 'listing_id');
     }
 
-    public function offers(): HasMany
-    {
-        return $this->hasMany(Offer::class, 'listing_id');
-    }
-
     public function reviews(): HasMany
     {
         return $this->hasMany(SellerReview::class, 'listing_id');

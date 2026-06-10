@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
-import { ShoppingCart, DollarSign, Clock, CheckCircle, Car, MessageSquare, Tag, Heart, Check } from 'lucide-react';
+import { ShoppingCart, DollarSign, Clock, CheckCircle, Car, MessageSquare, Heart, Check } from 'lucide-react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -140,23 +140,6 @@ export default function BuyerDashboard({ stats }: { stats: Stats }) {
                         </CardContent>
                     </Card>
 
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between pb-2">
-                            <CardTitle className="text-sm font-medium text-muted-foreground">Pending Offers</CardTitle>
-                            <div className="rounded-md bg-muted p-2 text-muted-foreground">
-                                {stats.pending_offers > 0 ? <Tag className="size-4" /> : <Check className="size-4" />}
-                            </div>
-                        </CardHeader>
-                        <CardContent className="flex items-center justify-between">
-                            <span className="text-2xl font-semibold tracking-tight">
-                                {stats.pending_offers > 0 ? stats.pending_offers : <Check className="size-6" />}
-                            </span>
-                            <Button variant="outline" size="sm" asChild>
-                                <Link href={buyer.offers.index()}>{stats.pending_offers > 0 ? 'View' : 'Browse'}</Link>
-                            </Button>
-                        </CardContent>
-                    </Card>
-
                 </div>
 
                 <div className="grid gap-4 lg:grid-cols-2">
@@ -202,11 +185,6 @@ export default function BuyerDashboard({ stats }: { stats: Stats }) {
                             <Button variant="outline" className="w-full justify-start" asChild>
                                 <Link href={buyer.inquiries.index()}>
                                     <MessageSquare className="mr-2 size-4" /> View My Inquiries
-                                </Link>
-                            </Button>
-                            <Button variant="outline" className="w-full justify-start" asChild>
-                                <Link href={buyer.offers.index()}>
-                                    <Tag className="mr-2 size-4" /> View My Offers
                                 </Link>
                             </Button>
                             <Button variant="outline" className="w-full justify-start" asChild>

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use App\Models\CarListing;
 use App\Models\Inquiry;
-use App\Models\Offer;
 use App\Models\Order;
 use App\Models\SellerReview;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +27,6 @@ class DashboardController extends Controller
 
         $activeListings = CarListing::where('seller_id', $sellerId)->where('status', 'in_stock')->count();
         $pendingInquiries = Inquiry::where('seller_id', $sellerId)->where('status', 'new')->count();
-        $pendingOffers = Offer::where('seller_id', $sellerId)->where('status', 'pending')->count();
         $avgRating = SellerReview::where('seller_id', $sellerId)->avg('rating');
 
         $monthlyRevenue = Order::where('seller_id', $sellerId)
@@ -73,7 +71,6 @@ class DashboardController extends Controller
                 'cancelled_orders' => $cancelledOrders,
                 'active_listings' => $activeListings,
                 'pending_inquiries' => $pendingInquiries,
-                'pending_offers' => $pendingOffers,
                 'avg_rating' => $avgRating ? round($avgRating, 1) : null,
                 'monthly_revenue' => $monthlyRevenue,
                 'status_breakdown' => $statusBreakdown,
@@ -82,9 +79,6 @@ class DashboardController extends Controller
         ]);
     }
 
-    /**
-     * Get dashboard stats as JSON for API consumption
-     */
     public function apiIndex()
     {
         $sellerId = auth()->id();
@@ -99,7 +93,6 @@ class DashboardController extends Controller
 
         $activeListings = CarListing::where('seller_id', $sellerId)->where('status', 'in_stock')->count();
         $pendingInquiries = Inquiry::where('seller_id', $sellerId)->where('status', 'new')->count();
-        $pendingOffers = Offer::where('seller_id', $sellerId)->where('status', 'pending')->count();
         $avgRating = SellerReview::where('seller_id', $sellerId)->avg('rating');
 
         $monthlyRevenue = Order::where('seller_id', $sellerId)
@@ -143,7 +136,6 @@ class DashboardController extends Controller
             'cancelled_orders' => $cancelledOrders,
             'active_listings' => $activeListings,
             'pending_inquiries' => $pendingInquiries,
-            'pending_offers' => $pendingOffers,
             'avg_rating' => $avgRating ? round($avgRating, 1) : null,
             'monthly_revenue' => $monthlyRevenue,
             'status_breakdown' => $statusBreakdown,

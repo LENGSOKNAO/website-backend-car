@@ -2,7 +2,6 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 import cars from './cars'
 import orders from './orders'
 import inquiries from './inquiries'
-import offers from './offers'
 import preOrders from './pre-orders'
 import reviews from './reviews'
 import profile from './profile'
@@ -100,7 +99,6 @@ const seller = {
     cars: Object.assign(cars, cars),
     orders: Object.assign(orders, orders),
     inquiries: Object.assign(inquiries, inquiries),
-    offers: Object.assign(offers, offers),
     preOrders: Object.assign(preOrders, preOrders),
     reviews: Object.assign(reviews, reviews),
     profile: Object.assign(profile, profile),

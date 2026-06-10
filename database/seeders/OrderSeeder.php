@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\CarListing;
-use App\Models\Offer;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Transaction;
@@ -91,18 +90,7 @@ class OrderSeeder extends Seeder
             $daysAgo = rand(1, 60);
             $placedAt = (clone $now)->subDays($daysAgo);
 
-            $offer = Offer::firstOrCreate(
-                ['listing_id' => $listing->id, 'buyer_id' => $buyer->id],
-                [
-                    'seller_id' => $seller->id,
-                    'offered_price' => max(1000, $listing->price - rand(100, 5000)),
-                    'message' => 'Demo offer',
-                    'status' => 'accepted',
-                    'expires_at' => (clone $placedAt)->addDays(3),
-                ]
-            );
-
-            $subtotal = $offer->offered_price ?? $listing->price;
+            $subtotal = max(1000, $listing->price - rand(100, 5000));
             $tax = round($subtotal * 0.08, 2);
             $fees = 499;
             $total = $subtotal + $tax + $fees;
@@ -127,7 +115,6 @@ class OrderSeeder extends Seeder
             OrderItem::firstOrCreate(
                 ['order_id' => $order->id, 'listing_id' => $listing->id],
                 [
-                    'offer_id' => $offer->id,
                     'price' => $subtotal,
                     'condition' => $listing->condition,
                 ]

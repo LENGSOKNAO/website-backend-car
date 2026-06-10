@@ -194,7 +194,7 @@ return `${p.listing.make.name} ${p.listing.model.name} (${p.listing.year})`;
                                     {orders.data.length === 0 ? (
                                         <TableRow>
                                             <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
-                                                No sales yet. Orders appear when a buyer's offer is accepted.
+                                                No sales yet.
                                             </TableCell>
                                         </TableRow>
                                     ) : (

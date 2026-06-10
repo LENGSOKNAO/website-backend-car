@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Buyer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Inquiry;
-use App\Models\Offer;
 use App\Models\Order;
 use App\Models\SavedListing;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +24,6 @@ class DashboardController extends Controller
 
         $savedListings = SavedListing::where('user_id', $buyerId)->count();
         $pendingInquiries = Inquiry::where('buyer_id', $buyerId)->where('status', 'new')->count();
-        $pendingOffers = Offer::where('buyer_id', $buyerId)->where('status', 'pending')->count();
 
         $statusBreakdown = Order::where('buyer_id', $buyerId)
             ->select('status', DB::raw('COUNT(*) as count'))
@@ -57,7 +55,6 @@ class DashboardController extends Controller
                 'completed_orders' => $completedOrders,
                 'saved_listings' => $savedListings,
                 'pending_inquiries' => $pendingInquiries,
-                'pending_offers' => $pendingOffers,
                 'status_breakdown' => $statusBreakdown,
                 'recent_orders' => $recentOrders,
             ],

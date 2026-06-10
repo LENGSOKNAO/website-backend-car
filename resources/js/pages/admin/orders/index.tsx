@@ -71,7 +71,7 @@ export default function OrderIndex({ orders }: { orders: PaginatedOrders }) {
                                 {orders.data.length === 0 ? (
                                     <TableRow>
                                         <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
-                                            No orders yet. Orders appear when an offer is accepted.
+                                            No orders yet.
                                         </TableCell>
                                     </TableRow>
                                 ) : (

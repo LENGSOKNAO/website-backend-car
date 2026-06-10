@@ -1,7 +1,6 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../wayfinder'
 import orders from './orders'
 import inquiries from './inquiries'
-import offers from './offers'
 import savedListings from './saved-listings'
 import preOrders from './pre-orders'
 /**
@@ -95,7 +94,6 @@ const buyer = {
     dashboard: Object.assign(dashboard, dashboard),
     orders: Object.assign(orders, orders),
     inquiries: Object.assign(inquiries, inquiries),
-    offers: Object.assign(offers, offers),
     savedListings: Object.assign(savedListings, savedListings),
     preOrders: Object.assign(preOrders, preOrders),
 }

@@ -19,8 +19,6 @@ use App\Http\Controllers\Admin\VehicleHistoryController;
 use App\Http\Controllers\Admin\WarrantyController;
 use App\Http\Controllers\Buyer\SavedListingController;
 use App\Http\Controllers\MessageController;
-use App\Http\Controllers\Seller\InquiryController;
-use App\Http\Controllers\Seller\OfferController;
 use App\Http\Controllers\Seller\ProfileController;
 use App\Http\Controllers\Seller\ReviewController;
 use App\Models\StoredFile;
@@ -261,12 +259,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('inquiries/{inquiry}', [InquiryController::class, 'show'])->name('inquiries.show');
         Route::put('inquiries/{inquiry}', [InquiryController::class, 'update'])->name('inquiries.update');
 
-        // Seller offers
-        Route::get('offers', [OfferController::class, 'index'])->name('offers.index');
-        Route::get('offers/{offer}', [OfferController::class, 'show'])->name('offers.show');
-        Route::post('offers/{offer}/accept', [OfferController::class, 'accept'])->name('offers.accept');
-        Route::post('offers/{offer}/reject', [OfferController::class, 'reject'])->name('offers.reject');
-
         // Seller pre-orders
         Route::get('pre-orders', [App\Http\Controllers\Seller\PreOrderController::class, 'index'])->name('pre-orders.index');
         Route::get('pre-orders/{pre_order}', [App\Http\Controllers\Seller\PreOrderController::class, 'show'])->name('pre-orders.show');
@@ -300,9 +292,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->only(['index', 'show']);
 
         Route::resource('inquiries', App\Http\Controllers\Buyer\InquiryController::class)
-            ->only(['index', 'show']);
-
-        Route::resource('offers', App\Http\Controllers\Buyer\OfferController::class)
             ->only(['index', 'show']);
 
         Route::get('saved-listings', [SavedListingController::class, 'index'])->name('saved-listings.index');

@@ -67,7 +67,7 @@ export default function BuyerOrders({ orders }: { orders: PaginatedOrders }) {
                                 {orders.data.length === 0 ? (
                                     <TableRow>
                                         <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
-                                            No purchases yet. Browse listings and make an offer to get started.
+                                            No purchases yet.
                                         </TableCell>
                                     </TableRow>
                                 ) : (

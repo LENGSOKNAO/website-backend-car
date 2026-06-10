@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\CarListing;
 use App\Models\Order;
 use App\Models\OrderInstallment;
 use App\Models\OrderItem;
+use App\Models\PreOrder;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +22,90 @@ class OrderController extends ApiController
         $orders = $query->latest()->get();
 
         return response()->json(['data' => $orders]);
+    }
+
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'listing_id' => 'required|exists:car_listings,id',
+            'price' => 'required|numeric|min:0',
+            'message' => 'nullable|string|max:1000',
+            'payment_method' => 'nullable|in:finance,cash',
+            'down_payment' => 'nullable|numeric|min:0',
+            'loan_term' => 'nullable|integer|min:1',
+            'accessories' => 'nullable|array',
+            'accessories.*.id' => 'string',
+            'accessories.*.name' => 'string',
+            'accessories.*.price' => 'numeric|min:0',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->error('Validation failed', 422, $validator->errors());
+        }
+
+        $listing = CarListing::findOrFail($request->listing_id);
+
+        $accessoriesTotal = collect($request->accessories ?? [])->sum(fn ($a) => $a['price'] ?? 0);
+        $totalPrice = $request->price + $accessoriesTotal;
+
+        $order = DB::transaction(function () use ($request, $listing, $totalPrice) {
+            $listing->update(['status' => 'out_of_stock', 'total' => 0]);
+
+            PreOrder::where('listing_id', $listing->id)
+                ->whereIn('status', ['pending', 'confirmed'])
+                ->update(['status' => 'cancelled']);
+
+            $orderData = [
+                'buyer_id' => auth()->id(),
+                'seller_id' => $listing->seller_id,
+                'order_number' => 'ORD-'.strtoupper(uniqid()),
+                'subtotal' => $totalPrice,
+                'tax' => 0,
+                'fees' => 0,
+                'total' => $totalPrice,
+                'notes' => $request->message,
+                'placed_at' => now(),
+            ];
+
+            if ($request->payment_method === 'finance' && $request->loan_term) {
+                $orderData['status'] = 'confirmed';
+                $orderData['payment_method'] = 'finance';
+                $orderData['down_payment'] = $request->down_payment ?? 0;
+                $orderData['loan_term'] = $request->loan_term;
+                $financedAmount = $totalPrice - ($request->down_payment ?? 0);
+                $monthlyRate = 0.069 / 12;
+                $orderData['monthly_payment'] = round(
+                    $financedAmount * ($monthlyRate * pow(1 + $monthlyRate, $request->loan_term)) / (pow(1 + $monthlyRate, $request->loan_term) - 1),
+                    2
+                );
+                $orderData['accessories'] = $request->accessories;
+                $orderData['next_payment_due_at'] = now()->addMonth();
+            } elseif ($request->payment_method === 'cash') {
+                $orderData['status'] = 'completed';
+                $orderData['payment_method'] = 'cash';
+                $orderData['down_payment'] = $totalPrice;
+                $orderData['completed_at'] = now();
+            } else {
+                $orderData['status'] = 'confirmed';
+            }
+
+            $order = Order::create($orderData);
+
+            OrderItem::create([
+                'order_id' => $order->id,
+                'listing_id' => $listing->id,
+                'price' => $request->price,
+                'condition' => $listing->condition,
+            ]);
+
+            if ($request->payment_method === 'finance' && $request->loan_term) {
+                $order->createInstallments();
+            }
+
+            return $order;
+        });
+
+        return $this->success($order->load('items.listing.make', 'items.listing.model'), 'Order placed', 201);
     }
 
     public function show(string $id)

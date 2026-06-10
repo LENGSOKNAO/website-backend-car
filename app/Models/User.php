@@ -127,16 +127,6 @@ class User extends Authenticatable implements JWTSubject, PasskeyUser
         return $this->hasMany(Inquiry::class, 'seller_id');
     }
 
-    public function offers(): HasMany
-    {
-        return $this->hasMany(Offer::class, 'buyer_id');
-    }
-
-    public function receivedOffers(): HasMany
-    {
-        return $this->hasMany(Offer::class, 'seller_id');
-    }
-
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class, 'buyer_id');

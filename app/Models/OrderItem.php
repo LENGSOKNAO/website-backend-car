@@ -13,7 +13,6 @@ class OrderItem extends Model
     protected $fillable = [
         'order_id',
         'listing_id',
-        'offer_id',
         'price',
         'condition',
     ];
@@ -33,10 +32,5 @@ class OrderItem extends Model
     public function listing(): BelongsTo
     {
         return $this->belongsTo(CarListing::class, 'listing_id');
-    }
-
-    public function offer(): BelongsTo
-    {
-        return $this->belongsTo(Offer::class);
     }
 }

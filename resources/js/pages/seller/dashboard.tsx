@@ -1,6 +1,6 @@
 import React from 'react';
 import { Head, Link } from '@inertiajs/react';
-import { ShoppingCart, DollarSign, Clock, CheckCircle, TrendingUp, Car, MessageSquare, Tag, Star, Check } from 'lucide-react';
+import { ShoppingCart, DollarSign, Clock, CheckCircle, TrendingUp, Car, MessageSquare, Star, Check } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -216,23 +216,6 @@ export default function SellerDashboard({ stats }: { stats: Stats }) {
                             </span>
                             <Button variant="outline" size="sm" asChild>
                                 <Link href={seller.inquiries.index()}>{stats.pending_inquiries > 0 ? 'View' : 'Browse'}</Link>
-                            </Button>
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between pb-2">
-                            <CardTitle className="text-sm font-medium text-muted-foreground">Pending Offers</CardTitle>
-                            <div className="rounded-md bg-muted p-2 text-muted-foreground">
-                                {stats.pending_offers > 0 ? <Tag className="size-4" /> : <Check className="size-4" />}
-                            </div>
-                        </CardHeader>
-                        <CardContent className="flex items-center justify-between">
-                            <span className="text-2xl font-semibold tracking-tight">
-                                 {dashboardStats.pending_offers > 0 ? dashboardStats.pending_offers : <Check className="size-6" />}
-                            </span>
-                            <Button variant="outline" size="sm" asChild>
-                                <Link href={seller.offers.index()}>{stats.pending_offers > 0 ? 'View' : 'Browse'}</Link>
                             </Button>
                         </CardContent>
                     </Card>

@@ -1,4 +1,4 @@
-import { BarChart3, ShoppingCart, MessageSquareText, DollarSign, Heart, Package } from 'lucide-react';
+import { BarChart3, ShoppingCart, MessageSquareText, Heart, Package } from 'lucide-react';
 import buyer from '@/routes/buyer';
 import type { NavItem } from '@/types';
 
@@ -23,11 +23,6 @@ export function getBuyerNavItems(showDashboard: boolean): NavItem[] {
             title: 'My Inquiries',
             href: buyer.inquiries.index(),
             icon: MessageSquareText,
-        } as NavItem,
-        {
-            title: 'My Offers',
-            href: buyer.offers.index(),
-            icon: DollarSign,
         } as NavItem,
         {
             title: 'Saved Listings',

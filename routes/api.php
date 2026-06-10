@@ -9,7 +9,6 @@ use App\Http\Controllers\Api\MakeController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\MessageController;
-use App\Http\Controllers\Api\OfferController;
 use App\Http\Controllers\Api\SavedListingController;
 use App\Http\Controllers\Api\UserController as ApiUserController;
 use App\Http\Controllers\Seller\DashboardController;
@@ -99,13 +98,11 @@ Route::prefix('v1')->group(function () {
         Route::get('inquiries/{id}', [InquiryController::class, 'show']);
         Route::put('inquiries/{id}', [InquiryController::class, 'update']);
 
-        // Offers
-        Route::get('offers', [OfferController::class, 'index']);
-        Route::post('offers', [OfferController::class, 'store']);
-        Route::get('offers/{id}', [OfferController::class, 'show']);
-        Route::post('offers/{id}/accept', [OfferController::class, 'accept']);
-        Route::post('offers/{id}/reject', [OfferController::class, 'reject']);
-        Route::post('offers/{id}/counter', [OfferController::class, 'counter']);
+        // Orders
+        Route::get('orders', [OrderController::class, 'index']);
+        Route::post('orders', [OrderController::class, 'store']);
+        Route::get('orders/{id}', [OrderController::class, 'show']);
+        Route::post('orders/{id}/pay-installment', [OrderController::class, 'payInstallment']);
 
         // Messages
         Route::get('conversations', [MessageController::class, 'conversations']);
@@ -113,11 +110,6 @@ Route::prefix('v1')->group(function () {
         Route::post('messages/send', [MessageController::class, 'send']);
         Route::post('conversations/{id}/reply', [MessageController::class, 'reply']);
         Route::post('conversations/{id}/read', [MessageController::class, 'markRead']);
-
-        // Orders
-        Route::get('orders', [OrderController::class, 'index']);
-        Route::get('orders/{id}', [OrderController::class, 'show']);
-        Route::post('orders/{id}/pay-installment', [OrderController::class, 'payInstallment']);
 
         // Admin User Management (super-admin & admin only)
         Route::middleware('role:super-admin,admin')->group(function () {
