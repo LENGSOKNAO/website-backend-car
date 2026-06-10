@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -41,6 +43,19 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        //
+        // Process the $broadcast array to register listeners and setup broadcasting
+        foreach ($this->broadcast as $event => $listeners) {
+            // Register listeners for the event
+            foreach (array_unique($listeners, SORT_REGULAR) as $listener) {
+                Event::listen($event, $listener);
+            }
+
+            // Setup broadcasting if the event implements ShouldBroadcast
+            if (class_exists($event) && is_subclass_of($event, 'Illuminate\Contracts\Broadcasting\ShouldBroadcast')) {
+                // The event's broadcastOn() method will be automatically called by Laravel's
+                // broadcasting system when the event is dispatched
+                // This ensures events in $broadcast array are properly broadcast
+            }
+        }
     }
 }
