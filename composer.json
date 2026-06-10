@@ -46,7 +46,7 @@
     "scripts": {
         "vercel": [
             "@php -r \"@mkdir('bootstrap/cache', 0777, true) || true; @mkdir('storage/framework/cache', 0777, true) || true; @mkdir('storage/framework/sessions', 0777, true) || true; @mkdir('storage/framework/views', 0777, true) || true; @mkdir('storage/framework/testing', 0777, true) || true;\"",
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env'); \\$env = file_get_contents('.env'); \\$env = preg_replace('/^DB_CONNECTION=.+/m', 'DB_CONNECTION=sqlite', \\$env); file_put_contents('.env', \\$env);\"",
             "@php artisan key:generate --force"
         ],
         "setup": [
