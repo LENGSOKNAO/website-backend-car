@@ -28,7 +28,6 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('order_id')->constrained('orders')->cascadeOnDelete();
             $table->foreignUuid('listing_id')->constrained('car_listings');
-            $table->foreignUuid('offer_id')->nullable()->constrained('offers');
             $table->decimal('price', 12, 2);
             $table->string('condition')->nullable();
             $table->timestamps();

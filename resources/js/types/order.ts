@@ -1,0 +1,20 @@
+export type Order = {
+    id: string;
+    order_number: string;
+    status: string;
+    subtotal: number;
+    tax: number;
+    fees: number;
+    total: number;
+    notes: string | null;
+    placed_at: string | null;
+    completed_at: string | null;
+    created_at: string;
+    updated_at: string;
+    payment_method: string | null;
+    down_payment: number | null;
+    loan_term: number | null;
+    monthly_payment: number | null;
+    accessories: unknown[] | null;
+    next_payment_due_at: string | null;
+};

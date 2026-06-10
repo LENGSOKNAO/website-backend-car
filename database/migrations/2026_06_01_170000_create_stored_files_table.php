@@ -8,6 +8,10 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (Schema::hasTable('stored_files')) {
+            return;
+        }
+
         Schema::create('stored_files', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('original_name');

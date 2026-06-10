@@ -8,11 +8,6 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('order_items', function (Blueprint $table) {
-            $table->dropForeign(['offer_id']);
-            $table->dropColumn('offer_id');
-        });
-
         Schema::dropIfExists('offers');
     }
 
@@ -28,10 +23,6 @@ return new class extends Migration
             $table->string('status')->default('pending');
             $table->timestamp('expires_at')->nullable();
             $table->timestamps();
-        });
-
-        Schema::table('order_items', function (Blueprint $table) {
-            $table->foreignUuid('offer_id')->nullable()->constrained('offers');
         });
     }
 };
