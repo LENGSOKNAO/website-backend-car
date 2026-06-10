@@ -10,6 +10,9 @@ import { resolve } from 'path';
 const isVercelBuild = process.env.VERCEL === '1' || process.env.CI === 'true';
 
 export default defineConfig({
+    build: {
+        reportCompressedSize: false,
+    },
     server: {
         host: '127.0.0.1',
         proxy: {
