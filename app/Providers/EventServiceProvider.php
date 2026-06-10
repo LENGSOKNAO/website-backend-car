@@ -36,7 +36,7 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\SellerDashboardUpdated::class => [],
     ];
 
-/**
+    /**
      * Register any events for your application.
      */
     public function boot(): void
@@ -50,9 +50,10 @@ class EventServiceProvider extends ServiceProvider
                     foreach (array_unique($listeners, SORT_REGULAR) as $listener) {
                         if (class_exists($event) && class_exists($listener)) {
                             Event::listen($event, $listener);
-}
+                        }
+                    }
+                }
             }
         });
     }
-}
 }
