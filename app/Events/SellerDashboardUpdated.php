@@ -2,17 +2,12 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class SellerDashboardUpdated implements ShouldBroadcast
+class SellerDashboardUpdated
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, SerializesModels;
 
     /**
      * Create a new event instance.
@@ -20,27 +15,5 @@ class SellerDashboardUpdated implements ShouldBroadcast
     public function __construct(
         public string $sellerId,
     ) {
-    }
-
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
-     */
-    public function broadcastOn(): array
-    {
-        return [
-            new PrivateChannel('seller-dashboard.' . $this->sellerId),
-        ];
-    }
-
-    /**
-     * The event's broadcast name.
-     *
-     * @return string
-     */
-    public function broadcastAs(): string
-    {
-        return 'seller-dashboard-updated';
     }
 }
