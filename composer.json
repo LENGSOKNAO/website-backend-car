@@ -45,7 +45,7 @@
     },
     "scripts": {
         "vercel": [
-            "@mkdir -p bootstrap/cache storage/framework/cache storage/framework/sessions storage/framework/views storage/framework/testing storage/logs 2>/dev/null; touch bootstrap/cache/.gitkeep storage/framework/cache/.gitkeep storage/framework/sessions/.gitkeep storage/framework/views/.gitkeep storage/framework/testing/.gitkeep",
+            "@php -r \"@mkdir('bootstrap/cache', 0777, true) || true; @mkdir('storage/framework/cache', 0777, true) || true; @mkdir('storage/framework/sessions', 0777, true) || true; @mkdir('storage/framework/views', 0777, true) || true; @mkdir('storage/framework/testing', 0777, true) || true;\"",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php artisan key:generate --force"
         ],
