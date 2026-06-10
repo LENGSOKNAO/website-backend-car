@@ -33,6 +33,8 @@ class Order extends Model
         'next_payment_due_at',
     ];
 
+    protected $appends = ['installment_summary', 'installment_months'];
+
     protected function casts(): array
     {
         return [
@@ -157,5 +159,49 @@ class Order extends Model
                 $this->update(['status' => 'completed', 'completed_at' => now()]);
             }
         }
+    }
+
+    public function getInstallmentSummaryAttribute(): array
+    {
+        if (!$this->relationLoaded('installments')) {
+            $this->load('installments');
+        }
+
+        $installments = $this->installments;
+        $totalMonths = $this->loan_term ?? $installments->count();
+        $paidCount = $installments->where('status', 'paid')->count();
+        $pendingCount = $installments->where('status', 'pending')->count();
+        $overdueCount = $installments->where('status', 'pending')
+            ->where('due_at', '<', now())->count();
+
+        return [
+            'total_months' => $totalMonths,
+            'paid_months' => $paidCount,
+            'pending_months' => $pendingCount,
+            'overdue_months' => $overdueCount,
+            'progress_percentage' => $totalMonths > 0 ? round(($paidCount / $totalMonths) * 100) : 0,
+            'is_completed' => $paidCount === $totalMonths && $totalMonths > 0,
+            'next_due_date' => $this->next_payment_due_at,
+        ];
+    }
+
+    public function getInstallmentMonthsAttribute(): array
+    {
+        if (!$this->relationLoaded('installments')) {
+            $this->load('installments');
+        }
+
+        return $this->installments->map(function ($installment) {
+            return [
+                'month_number' => $installment->month_number,
+                'amount' => $installment->amount,
+                'due_at' => $installment->due_at,
+                'paid_at' => $installment->paid_at,
+                'status' => $installment->status,
+                'transaction_id' => $installment->transaction_id,
+                'is_paid' => $installment->status === 'paid',
+                'is_overdue' => $installment->status === 'pending' && $installment->due_at < now(),
+            ];
+        })->values()->toArray();
     }
 }
