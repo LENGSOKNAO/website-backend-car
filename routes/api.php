@@ -53,6 +53,13 @@ Route::prefix('v1')->group(function () {
     Route::get('products', [ProductController::class, 'index']);
     Route::get('products/{id}', [ProductController::class, 'show']);
 
+            // Orders
+        Route::get('orders', [OrderController::class, 'index']);
+        Route::post('orders', [OrderController::class, 'store']);
+        Route::get('orders/{id}', [OrderController::class, 'show']);
+        Route::post('orders/{id}/pay-installment', [OrderController::class, 'payInstallment']);
+
+
     Route::middleware('auth:api')->group(function () {
 
         // Banners management
@@ -98,12 +105,7 @@ Route::prefix('v1')->group(function () {
         Route::get('inquiries/{id}', [InquiryController::class, 'show']);
         Route::put('inquiries/{id}', [InquiryController::class, 'update']);
 
-        // Orders
-        Route::get('orders', [OrderController::class, 'index']);
-        Route::post('orders', [OrderController::class, 'store']);
-        Route::get('orders/{id}', [OrderController::class, 'show']);
-        Route::post('orders/{id}/pay-installment', [OrderController::class, 'payInstallment']);
-
+ 
         // Messages
         Route::get('conversations', [MessageController::class, 'conversations']);
         Route::get('conversations/{id}/messages', [MessageController::class, 'messages']);
