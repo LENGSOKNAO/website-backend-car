@@ -22,6 +22,8 @@ import {
     FolderIcon,
     Check,
     MessageSquare,
+    TrendingUp,
+    AlertCircle,
 } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -88,6 +90,30 @@ interface OrderShow {
         status: string;
         processed_at: string | null;
         created_at: string;
+    }[];
+    payment_method?: string;
+    loan_term?: number;
+    monthly_payment?: number;
+    down_payment?: number;
+    next_payment_due_at?: string | null;
+    installment_summary?: {
+        total_months: number;
+        paid_months: number;
+        pending_months: number;
+        overdue_months: number;
+        progress_percentage: number;
+        is_completed: boolean;
+        next_due_date: string | null;
+    };
+    installment_months?: {
+        month_number: number;
+        amount: number;
+        due_at: string;
+        paid_at: string | null;
+        status: string;
+        transaction_id: string | null;
+        is_paid: boolean;
+        is_overdue: boolean;
     }[];
 }
 
@@ -380,6 +406,98 @@ export default function SellerOrderShow({ order }: { order: OrderShow }) {
                         </div>
                     )}
 
+                    {/* ── INSTALLMENTS (Finance Orders) ── */}
+                    {order.payment_method === 'finance' && order.installment_summary && (
+                        <div className="px-6 py-4 border-t">
+                            <div className="mb-4 flex items-center justify-between">
+                                <div className="flex items-center gap-2 text-sm font-semibold">
+                                    <CreditCard className="size-4 text-muted-foreground" />
+                                    Installment Plan
+                                </div>
+                                <div className="flex items-center gap-4 text-sm">
+                                    <span className="text-muted-foreground">Progress:</span>
+                                    <div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
+                                        <div 
+                                            className="h-full bg-blue-500 transition-all duration-300"
+                                            style={{ width: `${order.installment_summary.progress_percentage}%` }}
+                                        />
+                                    </div>
+                                    <span className="font-medium text-blue-600">{order.installment_summary.progress_percentage}%</span>
+                                </div>
+                            </div>
+
+                            {/* Summary Cards */}
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                                <SummaryCard 
+                                    label="Total Months" 
+                                    value={order.installment_summary.total_months}
+                                    icon={Calendar}
+                                    color="blue"
+                                />
+                                <SummaryCard 
+                                    label="Paid" 
+                                    value={order.installment_summary.paid_months}
+                                    icon={CircleCheck}
+                                    color="green"
+                                />
+                                <SummaryCard 
+                                    label="Pending" 
+                                    value={order.installment_summary.pending_months}
+                                    icon={Clock}
+                                    color="yellow"
+                                />
+                                <SummaryCard 
+                                    label="Overdue" 
+                                    value={order.installment_summary.overdue_months}
+                                    icon={AlertCircle}
+                                    color="red"
+                                />
+                            </div>
+
+                            {/* Month-by-month breakdown */}
+                            {order.installment_months && order.installment_months.length > 0 && (
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-sm">
+                                        <thead>
+                                            <tr className="text-left border-b border-border">
+                                                <th className="pb-2 pr-3 text-xs font-medium tracking-wider text-muted-foreground uppercase">Month</th>
+                                                <th className="pb-2 pr-3 text-xs font-medium tracking-wider text-muted-foreground uppercase">Due Date</th>
+                                                <th className="pb-2 pr-3 text-xs font-medium tracking-wider text-muted-foreground uppercase">Amount</th>
+                                                <th className="pb-2 pr-3 text-xs font-medium tracking-wider text-muted-foreground uppercase">Status</th>
+                                                <th className="pb-2 pr-3 text-xs font-medium tracking-wider text-muted-foreground uppercase">Paid Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {order.installment_months.map((inst: any) => (
+                                                <tr key={inst.month_number} className="border-b border-border/50">
+                                                    <td className="py-3 pr-3 font-medium">Month {inst.month_number}</td>
+                                                    <td className="py-3 pr-3 text-muted-foreground">
+                                                        {inst.due_at ? new Date(inst.due_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '-'}
+                                                    </td>
+                                                    <td className="py-3 pr-3 font-semibold">{fmt(inst.amount)}</td>
+                                                    <td className="py-3 pr-3">
+                                                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                                            inst.is_paid ? 'bg-green-100 text-green-700' :
+                                                            inst.is_overdue ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'
+                                                        }`}>
+                                                            {inst.is_paid && <CircleCheck className="size-3" />}
+                                                            {inst.is_overdue && <AlertCircle className="size-3" />}
+                                                            {!inst.is_paid && !inst.is_overdue && <Clock className="size-3" />}
+                                                            {inst.status.charAt(0).toUpperCase() + inst.status.slice(1)}
+                                                        </span>
+                                                    </td>
+                                                    <td className="py-3 pr-3 text-sm text-muted-foreground">
+                                                        {inst.paid_at ? new Date(inst.paid_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '-'}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
                     {/* ── FOOTER ── */}
                     <div className="px-6 py-4 text-center text-xs text-muted-foreground">
                         <p>Thank you for your business!</p>
@@ -399,6 +517,31 @@ export default function SellerOrderShow({ order }: { order: OrderShow }) {
                 }
             `}</style>
         </>
+    );
+}
+
+function SummaryCard({ label, value, icon: Icon, color }: { label: string; value: number; icon: any; color: 'blue' | 'green' | 'yellow' | 'red' }) {
+    const colors = {
+        blue: 'bg-blue-100 text-blue-700 border-blue-200',
+        green: 'bg-green-100 text-green-700 border-green-200',
+        yellow: 'bg-yellow-100 text-yellow-700 border-yellow-200',
+        red: 'bg-red-100 text-red-700 border-red-200',
+    };
+    const iconColors = {
+        blue: 'text-blue-600',
+        green: 'text-green-600',
+        yellow: 'text-yellow-600',
+        red: 'text-red-600',
+    };
+
+    return (
+        <div className={`p-3 rounded-lg border ${colors[color]}`}>
+            <div className="flex items-center justify-between mb-1">
+                <Icon className={`size-4 ${iconColors[color]}`} />
+                <span className="text-2xl font-bold">{value}</span>
+            </div>
+            <span className="text-xs text-muted-foreground">{label}</span>
+        </div>
     );
 }
 
