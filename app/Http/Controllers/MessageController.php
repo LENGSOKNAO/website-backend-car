@@ -8,6 +8,7 @@ use App\Models\Message;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class MessageController extends Controller
@@ -155,7 +156,11 @@ class MessageController extends Controller
             'content' => $validated['content'],
         ]);
 
-        event(new MessageCreated($message));
+        try {
+            event(new MessageCreated($message));
+        } catch (\Throwable $e) {
+            Log::warning('Failed to broadcast message: ' . $e->getMessage());
+        }
 
         $conversation->update(['last_message_at' => now()]);
 
@@ -179,7 +184,11 @@ class MessageController extends Controller
             'content' => $validated['content'],
         ]);
 
-        event(new MessageCreated($message));
+        try {
+            event(new MessageCreated($message));
+        } catch (\Throwable $e) {
+            Log::warning('Failed to broadcast message: ' . $e->getMessage());
+        }
 
         $conversation->update(['last_message_at' => now()]);
 

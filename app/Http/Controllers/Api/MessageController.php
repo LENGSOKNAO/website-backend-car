@@ -6,6 +6,7 @@ use App\Models\Conversation;
 use App\Models\Message;
 use App\Events\MessageCreated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class MessageController extends ApiController
@@ -109,8 +110,11 @@ class MessageController extends ApiController
 
         $conversation->update(['last_message_at' => now()]);
 
-        // Broadcast the message creation event
-        event(new MessageCreated($message));
+        try {
+            event(new MessageCreated($message));
+        } catch (\Throwable $e) {
+            Log::warning('Failed to broadcast message: ' . $e->getMessage());
+        }
 
         return $this->success($message, 'Message sent', 201);
     }

@@ -51,6 +51,19 @@ class MessageCreated implements ShouldBroadcast
      */
     public function broadcastWith(): array
     {
-        return $this->message->load('sender')->toArray();
+        $this->message->load('sender');
+
+        return [
+            'id' => $this->message->id,
+            'conversation_id' => $this->message->conversation_id,
+            'sender_id' => $this->message->sender_id,
+            'content' => $this->message->content,
+            'read_at' => $this->message->read_at,
+            'created_at' => $this->message->created_at,
+            'sender' => [
+                'id' => $this->message->sender->id,
+                'full_name' => $this->message->sender->full_name,
+            ],
+        ];
     }
 }
