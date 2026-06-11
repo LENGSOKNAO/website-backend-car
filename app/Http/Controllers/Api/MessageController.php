@@ -217,4 +217,52 @@ class MessageController extends ApiController
 
         return $this->success(null, 'Marked as read');
     }
+
+    public function edit(Request $request, string $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'content' => 'required|string|max:5000',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->error('Validation failed', 422, $validator->errors());
+        }
+
+        $message = Message::where('id', $id)
+            ->where('sender_id', auth()->id())
+            ->firstOrFail();
+
+        $message->update([
+            'content' => $request->content,
+            'edited_at' => now(),
+        ]);
+
+        $message->load('sender');
+
+        return $this->success([
+            'id' => $message->id,
+            'conversation_id' => $message->conversation_id,
+            'sender_id' => $message->sender_id,
+            'sender' => [
+                'id' => $message->sender->id,
+                'full_name' => $message->sender->full_name,
+                'avatar_url' => $message->sender->avatar_url,
+            ],
+            'content' => $message->content,
+            'read_at' => $message->read_at,
+            'edited_at' => $message->edited_at,
+            'created_at' => $message->created_at,
+        ], 'Message updated');
+    }
+
+    public function delete(string $id)
+    {
+        $message = Message::where('id', $id)
+            ->where('sender_id', auth()->id())
+            ->firstOrFail();
+
+        $message->delete();
+
+        return $this->success(null, 'Message deleted');
+    }
 }

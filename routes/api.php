@@ -110,6 +110,8 @@ Route::prefix('v1')->group(function () {
         Route::post('messages/send', [MessageController::class, 'send']);
         Route::post('conversations/{id}/reply', [MessageController::class, 'reply']);
         Route::post('conversations/{id}/read', [MessageController::class, 'markRead']);
+        Route::put('messages/{id}', [MessageController::class, 'edit']);
+        Route::delete('messages/{id}', [MessageController::class, 'delete']);
 
         // Admin User Management (super-admin & admin only)
         Route::middleware('role:super-admin,admin')->group(function () {
