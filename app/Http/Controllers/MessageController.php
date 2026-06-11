@@ -21,12 +21,21 @@ class MessageController extends Controller
             ->select('id', 'full_name', 'email', 'type')
             ->get()
             ->map(function ($user) use ($authId) {
-                $user->has_ordered_from_me = $user->type === 'customer'
-                    && Order::where('buyer_id', $user->id)
-                        ->where('seller_id', $authId)
-                        ->exists();
+                $hasOrdered = false;
+                if ($user->type === 'customer') {
+                    try {
+                        $hasOrdered = Order::where('buyer_id', $user->id)
+                            ->where('seller_id', $authId)
+                            ->exists();
+                    } catch (\Throwable $e) {
+                        Log::warning('Failed to check order existence: ' . $e->getMessage());
+                    }
+                }
 
-                return $user;
+                $data = $user->toArray();
+                $data['has_ordered_from_me'] = $hasOrdered;
+
+                return $data;
             });
 
         return Inertia::render('messages/create', [

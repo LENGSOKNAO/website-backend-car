@@ -141,8 +141,11 @@ class MessageController extends ApiController
 
         $conversation->update(['last_message_at' => now()]);
 
-        // Broadcast the message creation event
-        event(new MessageCreated($message));
+        try {
+            event(new MessageCreated($message));
+        } catch (\Throwable $e) {
+            Log::warning('Failed to broadcast reply: ' . $e->getMessage());
+        }
 
         return $this->success($message, 'Reply sent', 201);
     }
