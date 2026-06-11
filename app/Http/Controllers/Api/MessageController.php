@@ -15,21 +15,35 @@ class MessageController extends ApiController
     {
         $userId = auth()->id();
 
-        $conversations = Conversation::with('sender', 'receiver', 'listing.make', 'listing.model')
+        $conversations = Conversation::with(['sender', 'receiver', 'listing.make', 'listing.model'])
             ->where('sender_id', $userId)
             ->orWhere('receiver_id', $userId)
             ->latest('last_message_at')
             ->get()
             ->map(function ($conv) use ($userId) {
-                $otherUser = $conv->sender_id === $userId ? $conv->receiver : $conv->sender;
                 $lastMsg = Message::where('conversation_id', $conv->id)->latest()->first();
 
                 return [
                     'id' => $conv->id,
-                    'other_user' => ['id' => $otherUser->id, 'full_name' => $otherUser->full_name],
+                    'sender_id' => $conv->sender_id,
+                    'receiver_id' => $conv->receiver_id,
+                    'sender' => [
+                        'id' => $conv->sender->id,
+                        'full_name' => $conv->sender->full_name,
+                        'avatar_url' => $conv->sender->avatar_url,
+                    ],
+                    'receiver' => [
+                        'id' => $conv->receiver->id,
+                        'full_name' => $conv->receiver->full_name,
+                        'avatar_url' => $conv->receiver->avatar_url,
+                    ],
                     'subject' => $conv->subject,
                     'listing' => $conv->listing ? [
-                        'title' => ($conv->listing->make->name ?? '').' '.($conv->listing->model->name ?? ''),
+                        'id' => $conv->listing->id,
+                        'make' => $conv->listing->make->name ?? '',
+                        'model' => $conv->listing->model->name ?? '',
+                        'year' => $conv->listing->year,
+                        'price' => $conv->listing->price,
                     ] : null,
                     'last_message' => $lastMsg?->content,
                     'last_message_at' => $conv->last_message_at,
@@ -55,7 +69,11 @@ class MessageController extends ApiController
             ->map(fn ($m) => [
                 'id' => $m->id,
                 'sender_id' => $m->sender_id,
-                'sender_name' => $m->sender->full_name,
+                'sender' => [
+                    'id' => $m->sender->id,
+                    'full_name' => $m->sender->full_name,
+                    'avatar_url' => $m->sender->avatar_url,
+                ],
                 'content' => $m->content,
                 'read_at' => $m->read_at,
                 'created_at' => $m->created_at,
@@ -116,7 +134,21 @@ class MessageController extends ApiController
             Log::warning('Failed to broadcast message: ' . $e->getMessage());
         }
 
-        return $this->success($message, 'Message sent', 201);
+        $message->load('sender');
+
+        return $this->success([
+            'id' => $message->id,
+            'conversation_id' => $message->conversation_id,
+            'sender_id' => $message->sender_id,
+            'sender' => [
+                'id' => $message->sender->id,
+                'full_name' => $message->sender->full_name,
+                'avatar_url' => $message->sender->avatar_url,
+            ],
+            'content' => $message->content,
+            'read_at' => $message->read_at,
+            'created_at' => $message->created_at,
+        ], 'Message sent', 201);
     }
 
     public function reply(Request $request, string $id)
@@ -147,7 +179,21 @@ class MessageController extends ApiController
             Log::warning('Failed to broadcast reply: ' . $e->getMessage());
         }
 
-        return $this->success($message, 'Reply sent', 201);
+        $message->load('sender');
+
+        return $this->success([
+            'id' => $message->id,
+            'conversation_id' => $message->conversation_id,
+            'sender_id' => $message->sender_id,
+            'sender' => [
+                'id' => $message->sender->id,
+                'full_name' => $message->sender->full_name,
+                'avatar_url' => $message->sender->avatar_url,
+            ],
+            'content' => $message->content,
+            'read_at' => $message->read_at,
+            'created_at' => $message->created_at,
+        ], 'Reply sent', 201);
     }
 
     public function markRead(string $id)
