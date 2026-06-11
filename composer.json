@@ -18,6 +18,7 @@
         "laravel/wayfinder": "^0.1.14",
         "league/flysystem-aws-s3-v3": "*",
         "ntanduy/cloudflare-d1-database": "*",
+        "pusher/pusher-php-server": "*",
         "spatie/laravel-permission": "*",
         "tymon/jwt-auth": "*"
     },

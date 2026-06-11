@@ -13,6 +13,9 @@ use App\Http\Controllers\Api\SavedListingController;
 use App\Http\Controllers\Api\UserController as ApiUserController;
 use App\Http\Controllers\Seller\DashboardController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Broadcast;
+
+Broadcast::routes(['middleware' => ['auth:api']]);
 
 Route::prefix('v1')->group(function () {
 
