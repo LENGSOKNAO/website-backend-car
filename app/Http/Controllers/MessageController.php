@@ -19,23 +19,44 @@ class MessageController extends Controller
 
         $users = User::where('id', '!=', $authId)
             ->select('id', 'full_name', 'email', 'type')
+            ->with('roles')
             ->get()
             ->map(function ($user) use ($authId) {
-                $hasOrdered = false;
-                if ($user->type === 'customer') {
-                    try {
+                try {
+                    $hasOrdered = false;
+                    if ($user->type === 'customer') {
                         $hasOrdered = Order::where('buyer_id', $user->id)
                             ->where('seller_id', $authId)
                             ->exists();
-                    } catch (\Throwable $e) {
-                        Log::warning('Failed to check order existence: ' . $e->getMessage());
                     }
+
+                    return [
+                        'id' => $user->id,
+                        'full_name' => $user->full_name,
+                        'email' => $user->email,
+                        'type' => $user->type,
+                        'name' => $user->full_name,
+                        'avatar' => null,
+                        'roles' => $user->roles->toArray(),
+                        'has_ordered_from_me' => $hasOrdered,
+                    ];
+                } catch (\Throwable $e) {
+                    Log::error('Failed to map user for messages/create: ' . $e->getMessage(), [
+                        'user_id' => $user->id,
+                        'exception' => get_class($e),
+                    ]);
+
+                    return [
+                        'id' => $user->id,
+                        'full_name' => $user->full_name,
+                        'email' => $user->email,
+                        'type' => $user->type,
+                        'name' => $user->full_name,
+                        'avatar' => null,
+                        'roles' => [],
+                        'has_ordered_from_me' => false,
+                    ];
                 }
-
-                $data = $user->toArray();
-                $data['has_ordered_from_me'] = $hasOrdered;
-
-                return $data;
             });
 
         return Inertia::render('messages/create', [
