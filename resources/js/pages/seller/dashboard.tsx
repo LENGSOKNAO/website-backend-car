@@ -1,5 +1,5 @@
 import React from 'react';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { ShoppingCart, DollarSign, Clock, CheckCircle, TrendingUp, Car, MessageSquare, Star, Check } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Badge } from '@/components/ui/badge';
@@ -73,13 +73,28 @@ export default function SellerDashboard({ stats }: { stats: Stats }) {
     // State for dashboard stats
     const [dashboardStats, setDashboardStats] = React.useState<Stats>(stats);
 
+    // Refresh dashboard stats via Inertia (preserves web session auth)
+    const refreshStats = React.useCallback(() => {
+        router.reload({
+            only: ['stats'],
+            preserveState: true,
+            preserveScroll: true,
+            onSuccess: (page) => {
+                if (page.props.stats) {
+                    setDashboardStats(page.props.stats as Stats);
+                }
+            },
+            onError: () => {
+                console.error('Failed to refresh dashboard stats');
+            },
+        });
+    }, []);
+
     // Set up real-time updates using Echo/Pusher
     React.useEffect(() => {
-        // In a real app, you would get the seller ID from auth context or props
-        // For now, we'll simulate getting it from somewhere or use a placeholder
-        const sellerId = 1; // This should come from auth/user context
+        const { auth } = usePage().props as { auth: { user: { id: string | number } } };
+        const sellerId = auth.user.id;
         
-        // Set up Echo to listen for seller dashboard updates
         // Only proceed if Echo is available (initialized in bootstrap.js)
         if (!window.Echo) {
             console.warn('Echo not available. Real-time updates disabled.');
@@ -92,38 +107,15 @@ export default function SellerDashboard({ stats }: { stats: Stats }) {
         const channel = echo.private(`seller-dashboard.${sellerId}`);
 
         // Listen for the seller-dashboard-updated event
-        channel.listen('.seller-dashboard-updated', (e: any) => {
-            // When we receive an update, fetch the latest dashboard data
-            fetch(`/api/v1/seller/dashboard`)
-                .then(response => response.json())
-                .then(data => {
-                    setDashboardStats(data);
-                })
-                .catch(error => {
-                    console.error('Failed to fetch dashboard data:', error);
-                });
+        channel.listen('.seller-dashboard-updated', () => {
+            refreshStats();
         });
-
-        // Also fetch initial data
-        const fetchInitialData = async () => {
-            try {
-                const response = await fetch(`/api/v1/seller/dashboard`);
-                if (response.ok) {
-                    const data = await response.json();
-                    setDashboardStats(data);
-                }
-            } catch (error) {
-                console.error('Failed to fetch initial dashboard data:', error);
-            }
-        };
-
-        fetchInitialData();
 
         // Clean up on unmount
         return () => {
             echo.leave(channel);
         };
-    }, []); // Empty deps array to run once on mount
+    }, [refreshStats]);
 
     return (
         <>
@@ -207,7 +199,7 @@ export default function SellerDashboard({ stats }: { stats: Stats }) {
                         <CardHeader className="flex flex-row items-center justify-between pb-2">
                             <CardTitle className="text-sm font-medium text-muted-foreground">Pending Inquiries</CardTitle>
                             <div className="rounded-md bg-muted p-2 text-muted-foreground">
-                                {stats.pending_inquiries > 0 ? <MessageSquare className="size-4" /> : <Check className="size-4" />}
+                                {dashboardStats.pending_inquiries > 0 ? <MessageSquare className="size-4" /> : <Check className="size-4" />}
                             </div>
                         </CardHeader>
                         <CardContent className="flex items-center justify-between">
@@ -215,7 +207,7 @@ export default function SellerDashboard({ stats }: { stats: Stats }) {
                                  {dashboardStats.pending_inquiries > 0 ? dashboardStats.pending_inquiries : <Check className="size-6" />}
                             </span>
                             <Button variant="outline" size="sm" asChild>
-                                <Link href={seller.inquiries.index()}>{stats.pending_inquiries > 0 ? 'View' : 'Browse'}</Link>
+                                <Link href={seller.inquiries.index()}>{dashboardStats.pending_inquiries > 0 ? 'View' : 'Browse'}</Link>
                             </Button>
                         </CardContent>
                     </Card>
@@ -230,7 +222,7 @@ export default function SellerDashboard({ stats }: { stats: Stats }) {
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="h-72">
-                            {stats.monthly_revenue.length === 0 ? (
+                            {dashboardStats.monthly_revenue.length === 0 ? (
                                 <div className="flex h-full items-center justify-center">
                                     <div className="text-center">
                                         <TrendingUp className="mx-auto size-8 text-muted-foreground/40" />
@@ -255,7 +247,7 @@ export default function SellerDashboard({ stats }: { stats: Stats }) {
                             <CardTitle className="text-base">Orders by Status</CardTitle>
                         </CardHeader>
                         <CardContent className="h-72">
-                            {stats.status_breakdown.length === 0 ? (
+                            {dashboardStats.status_breakdown.length === 0 ? (
                                 <div className="flex h-full items-center justify-center">
                                     <div className="text-center">
                                         <ShoppingCart className="mx-auto size-8 text-muted-foreground/40" />
@@ -293,7 +285,7 @@ export default function SellerDashboard({ stats }: { stats: Stats }) {
                         </Button>
                     </CardHeader>
                     <CardContent>
-                        {stats.recent_orders.length === 0 ? (
+                        {dashboardStats.recent_orders.length === 0 ? (
                             <div className="py-8 text-center">
                                 <ShoppingCart className="mx-auto size-8 text-muted-foreground/40" />
                                 <p className="mt-2 text-sm text-muted-foreground">No orders yet.</p>
