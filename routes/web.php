@@ -303,8 +303,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // ── Messages (all authenticated users) ──
-    Route::resource('messages', MessageController::class)
-        ->only(['index', 'show', 'create', 'store']);
+    Route::get('messages', [MessageController::class, 'index'])->name('messages.index');
+    Route::get('messages/create', [MessageController::class, 'create'])->name('messages.create');
+    Route::get('messages/{message}', [MessageController::class, 'show'])->name('messages.show');
+    Route::post('messages', [MessageController::class, 'store'])->name('messages.store');
     Route::post('messages/{message}/reply', [MessageController::class, 'storeMessage'])
         ->name('messages.reply');
     Route::put('messages/{message}', [MessageController::class, 'updateMessage'])
