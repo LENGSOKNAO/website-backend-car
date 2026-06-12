@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../wayfinder'
 /**
 * @see \InquiryController::index
  * @see [unknown]:0
@@ -258,10 +258,6 @@ update.put = (args: { inquiry: string | number } | [inquiry: string | number ] |
         })
     
     update.form = updateForm
-const inquiries = {
-    index: Object.assign(index, index),
-show: Object.assign(show, show),
-update: Object.assign(update, update),
-}
+const InquiryController = { index, show, update }
 
-export default inquiries
+export default InquiryController

@@ -1,8 +1,8 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
-* @see \App\Http\Controllers\Api\ListingController::index
- * @see app/Http/Controllers/Api/ListingController.php:12
- * @route '/v1/listings'
+* @see \App\Http\Controllers\Api\ProductController::index
+ * @see app/Http/Controllers/Api/ProductController.php:12
+ * @route '/v1/products'
  */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(options),
@@ -11,31 +11,31 @@ export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 index.definition = {
     methods: ["get","head"],
-    url: '/v1/listings',
+    url: '/v1/products',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \App\Http\Controllers\Api\ListingController::index
- * @see app/Http/Controllers/Api/ListingController.php:12
- * @route '/v1/listings'
+* @see \App\Http\Controllers\Api\ProductController::index
+ * @see app/Http/Controllers/Api/ProductController.php:12
+ * @route '/v1/products'
  */
 index.url = (options?: RouteQueryOptions) => {
     return index.definition.url + queryParams(options)
 }
 
 /**
-* @see \App\Http\Controllers\Api\ListingController::index
- * @see app/Http/Controllers/Api/ListingController.php:12
- * @route '/v1/listings'
+* @see \App\Http\Controllers\Api\ProductController::index
+ * @see app/Http/Controllers/Api/ProductController.php:12
+ * @route '/v1/products'
  */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(options),
     method: 'get',
 })
 /**
-* @see \App\Http\Controllers\Api\ListingController::index
- * @see app/Http/Controllers/Api/ListingController.php:12
- * @route '/v1/listings'
+* @see \App\Http\Controllers\Api\ProductController::index
+ * @see app/Http/Controllers/Api/ProductController.php:12
+ * @route '/v1/products'
  */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: index.url(options),
@@ -43,9 +43,9 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
     /**
-* @see \App\Http\Controllers\Api\ListingController::index
- * @see app/Http/Controllers/Api/ListingController.php:12
- * @route '/v1/listings'
+* @see \App\Http\Controllers\Api\ProductController::index
+ * @see app/Http/Controllers/Api/ProductController.php:12
+ * @route '/v1/products'
  */
     const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: index.url(options),
@@ -53,18 +53,18 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     })
 
             /**
-* @see \App\Http\Controllers\Api\ListingController::index
- * @see app/Http/Controllers/Api/ListingController.php:12
- * @route '/v1/listings'
+* @see \App\Http\Controllers\Api\ProductController::index
+ * @see app/Http/Controllers/Api/ProductController.php:12
+ * @route '/v1/products'
  */
         indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: index.url(options),
             method: 'get',
         })
             /**
-* @see \App\Http\Controllers\Api\ListingController::index
- * @see app/Http/Controllers/Api/ListingController.php:12
- * @route '/v1/listings'
+* @see \App\Http\Controllers\Api\ProductController::index
+ * @see app/Http/Controllers/Api/ProductController.php:12
+ * @route '/v1/products'
  */
         indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: index.url({
@@ -78,9 +78,9 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     
     index.form = indexForm
 /**
-* @see \App\Http\Controllers\Api\ListingController::show
- * @see app/Http/Controllers/Api/ListingController.php:62
- * @route '/v1/listings/{id}'
+* @see \App\Http\Controllers\Api\ProductController::show
+ * @see app/Http/Controllers/Api/ProductController.php:50
+ * @route '/v1/products/{id}'
  */
 export const show = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
@@ -89,13 +89,13 @@ export const show = (args: { id: string | number } | [id: string | number ] | st
 
 show.definition = {
     methods: ["get","head"],
-    url: '/v1/listings/{id}',
+    url: '/v1/products/{id}',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \App\Http\Controllers\Api\ListingController::show
- * @see app/Http/Controllers/Api/ListingController.php:62
- * @route '/v1/listings/{id}'
+* @see \App\Http\Controllers\Api\ProductController::show
+ * @see app/Http/Controllers/Api/ProductController.php:50
+ * @route '/v1/products/{id}'
  */
 show.url = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -121,18 +121,18 @@ show.url = (args: { id: string | number } | [id: string | number ] | string | nu
 }
 
 /**
-* @see \App\Http\Controllers\Api\ListingController::show
- * @see app/Http/Controllers/Api/ListingController.php:62
- * @route '/v1/listings/{id}'
+* @see \App\Http\Controllers\Api\ProductController::show
+ * @see app/Http/Controllers/Api/ProductController.php:50
+ * @route '/v1/products/{id}'
  */
 show.get = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
 /**
-* @see \App\Http\Controllers\Api\ListingController::show
- * @see app/Http/Controllers/Api/ListingController.php:62
- * @route '/v1/listings/{id}'
+* @see \App\Http\Controllers\Api\ProductController::show
+ * @see app/Http/Controllers/Api/ProductController.php:50
+ * @route '/v1/products/{id}'
  */
 show.head = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: show.url(args, options),
@@ -140,9 +140,9 @@ show.head = (args: { id: string | number } | [id: string | number ] | string | n
 })
 
     /**
-* @see \App\Http\Controllers\Api\ListingController::show
- * @see app/Http/Controllers/Api/ListingController.php:62
- * @route '/v1/listings/{id}'
+* @see \App\Http\Controllers\Api\ProductController::show
+ * @see app/Http/Controllers/Api/ProductController.php:50
+ * @route '/v1/products/{id}'
  */
     const showForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: show.url(args, options),
@@ -150,18 +150,18 @@ show.head = (args: { id: string | number } | [id: string | number ] | string | n
     })
 
             /**
-* @see \App\Http\Controllers\Api\ListingController::show
- * @see app/Http/Controllers/Api/ListingController.php:62
- * @route '/v1/listings/{id}'
+* @see \App\Http\Controllers\Api\ProductController::show
+ * @see app/Http/Controllers/Api/ProductController.php:50
+ * @route '/v1/products/{id}'
  */
         showForm.get = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: show.url(args, options),
             method: 'get',
         })
             /**
-* @see \App\Http\Controllers\Api\ListingController::show
- * @see app/Http/Controllers/Api/ListingController.php:62
- * @route '/v1/listings/{id}'
+* @see \App\Http\Controllers\Api\ProductController::show
+ * @see app/Http/Controllers/Api/ProductController.php:50
+ * @route '/v1/products/{id}'
  */
         showForm.head = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: show.url(args, {
@@ -175,9 +175,9 @@ show.head = (args: { id: string | number } | [id: string | number ] | string | n
     
     show.form = showForm
 /**
-* @see \App\Http\Controllers\Api\ListingController::store
- * @see app/Http/Controllers/Api/ListingController.php:73
- * @route '/v1/listings'
+* @see \App\Http\Controllers\Api\ProductController::store
+ * @see app/Http/Controllers/Api/ProductController.php:61
+ * @route '/v1/products'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -186,22 +186,22 @@ export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => (
 
 store.definition = {
     methods: ["post"],
-    url: '/v1/listings',
+    url: '/v1/products',
 } satisfies RouteDefinition<["post"]>
 
 /**
-* @see \App\Http\Controllers\Api\ListingController::store
- * @see app/Http/Controllers/Api/ListingController.php:73
- * @route '/v1/listings'
+* @see \App\Http\Controllers\Api\ProductController::store
+ * @see app/Http/Controllers/Api/ProductController.php:61
+ * @route '/v1/products'
  */
 store.url = (options?: RouteQueryOptions) => {
     return store.definition.url + queryParams(options)
 }
 
 /**
-* @see \App\Http\Controllers\Api\ListingController::store
- * @see app/Http/Controllers/Api/ListingController.php:73
- * @route '/v1/listings'
+* @see \App\Http\Controllers\Api\ProductController::store
+ * @see app/Http/Controllers/Api/ProductController.php:61
+ * @route '/v1/products'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -209,9 +209,9 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 })
 
     /**
-* @see \App\Http\Controllers\Api\ListingController::store
- * @see app/Http/Controllers/Api/ListingController.php:73
- * @route '/v1/listings'
+* @see \App\Http\Controllers\Api\ProductController::store
+ * @see app/Http/Controllers/Api/ProductController.php:61
+ * @route '/v1/products'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: store.url(options),
@@ -219,9 +219,9 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     })
 
             /**
-* @see \App\Http\Controllers\Api\ListingController::store
- * @see app/Http/Controllers/Api/ListingController.php:73
- * @route '/v1/listings'
+* @see \App\Http\Controllers\Api\ProductController::store
+ * @see app/Http/Controllers/Api/ProductController.php:61
+ * @route '/v1/products'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: store.url(options),
@@ -230,9 +230,9 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     
     store.form = storeForm
 /**
-* @see \App\Http\Controllers\Api\ListingController::update
- * @see app/Http/Controllers/Api/ListingController.php:124
- * @route '/v1/listings/{id}'
+* @see \App\Http\Controllers\Api\ProductController::update
+ * @see app/Http/Controllers/Api/ProductController.php:88
+ * @route '/v1/products/{id}'
  */
 export const update = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
@@ -241,13 +241,13 @@ export const update = (args: { id: string | number } | [id: string | number ] | 
 
 update.definition = {
     methods: ["put"],
-    url: '/v1/listings/{id}',
+    url: '/v1/products/{id}',
 } satisfies RouteDefinition<["put"]>
 
 /**
-* @see \App\Http\Controllers\Api\ListingController::update
- * @see app/Http/Controllers/Api/ListingController.php:124
- * @route '/v1/listings/{id}'
+* @see \App\Http\Controllers\Api\ProductController::update
+ * @see app/Http/Controllers/Api/ProductController.php:88
+ * @route '/v1/products/{id}'
  */
 update.url = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -273,9 +273,9 @@ update.url = (args: { id: string | number } | [id: string | number ] | string | 
 }
 
 /**
-* @see \App\Http\Controllers\Api\ListingController::update
- * @see app/Http/Controllers/Api/ListingController.php:124
- * @route '/v1/listings/{id}'
+* @see \App\Http\Controllers\Api\ProductController::update
+ * @see app/Http/Controllers/Api/ProductController.php:88
+ * @route '/v1/products/{id}'
  */
 update.put = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
@@ -283,9 +283,9 @@ update.put = (args: { id: string | number } | [id: string | number ] | string | 
 })
 
     /**
-* @see \App\Http\Controllers\Api\ListingController::update
- * @see app/Http/Controllers/Api/ListingController.php:124
- * @route '/v1/listings/{id}'
+* @see \App\Http\Controllers\Api\ProductController::update
+ * @see app/Http/Controllers/Api/ProductController.php:88
+ * @route '/v1/products/{id}'
  */
     const updateForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: update.url(args, {
@@ -298,9 +298,9 @@ update.put = (args: { id: string | number } | [id: string | number ] | string | 
     })
 
             /**
-* @see \App\Http\Controllers\Api\ListingController::update
- * @see app/Http/Controllers/Api/ListingController.php:124
- * @route '/v1/listings/{id}'
+* @see \App\Http\Controllers\Api\ProductController::update
+ * @see app/Http/Controllers/Api/ProductController.php:88
+ * @route '/v1/products/{id}'
  */
         updateForm.put = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
@@ -314,9 +314,9 @@ update.put = (args: { id: string | number } | [id: string | number ] | string | 
     
     update.form = updateForm
 /**
-* @see \App\Http\Controllers\Api\ListingController::destroy
- * @see app/Http/Controllers/Api/ListingController.php:179
- * @route '/v1/listings/{id}'
+* @see \App\Http\Controllers\Api\ProductController::destroy
+ * @see app/Http/Controllers/Api/ProductController.php:118
+ * @route '/v1/products/{id}'
  */
 export const destroy = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
@@ -325,13 +325,13 @@ export const destroy = (args: { id: string | number } | [id: string | number ] |
 
 destroy.definition = {
     methods: ["delete"],
-    url: '/v1/listings/{id}',
+    url: '/v1/products/{id}',
 } satisfies RouteDefinition<["delete"]>
 
 /**
-* @see \App\Http\Controllers\Api\ListingController::destroy
- * @see app/Http/Controllers/Api/ListingController.php:179
- * @route '/v1/listings/{id}'
+* @see \App\Http\Controllers\Api\ProductController::destroy
+ * @see app/Http/Controllers/Api/ProductController.php:118
+ * @route '/v1/products/{id}'
  */
 destroy.url = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -357,9 +357,9 @@ destroy.url = (args: { id: string | number } | [id: string | number ] | string |
 }
 
 /**
-* @see \App\Http\Controllers\Api\ListingController::destroy
- * @see app/Http/Controllers/Api/ListingController.php:179
- * @route '/v1/listings/{id}'
+* @see \App\Http\Controllers\Api\ProductController::destroy
+ * @see app/Http/Controllers/Api/ProductController.php:118
+ * @route '/v1/products/{id}'
  */
 destroy.delete = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
@@ -367,9 +367,9 @@ destroy.delete = (args: { id: string | number } | [id: string | number ] | strin
 })
 
     /**
-* @see \App\Http\Controllers\Api\ListingController::destroy
- * @see app/Http/Controllers/Api/ListingController.php:179
- * @route '/v1/listings/{id}'
+* @see \App\Http\Controllers\Api\ProductController::destroy
+ * @see app/Http/Controllers/Api/ProductController.php:118
+ * @route '/v1/products/{id}'
  */
     const destroyForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: destroy.url(args, {
@@ -382,9 +382,9 @@ destroy.delete = (args: { id: string | number } | [id: string | number ] | strin
     })
 
             /**
-* @see \App\Http\Controllers\Api\ListingController::destroy
- * @see app/Http/Controllers/Api/ListingController.php:179
- * @route '/v1/listings/{id}'
+* @see \App\Http\Controllers\Api\ProductController::destroy
+ * @see app/Http/Controllers/Api/ProductController.php:118
+ * @route '/v1/products/{id}'
  */
         destroyForm.delete = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: destroy.url(args, {
@@ -398,9 +398,9 @@ destroy.delete = (args: { id: string | number } | [id: string | number ] | strin
     
     destroy.form = destroyForm
 /**
-* @see \App\Http\Controllers\Api\ListingController::uploadImage
- * @see app/Http/Controllers/Api/ListingController.php:192
- * @route '/v1/listings/{id}/images'
+* @see \App\Http\Controllers\Api\ProductController::uploadImage
+ * @see app/Http/Controllers/Api/ProductController.php:131
+ * @route '/v1/products/{id}/images'
  */
 export const uploadImage = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: uploadImage.url(args, options),
@@ -409,13 +409,13 @@ export const uploadImage = (args: { id: string | number } | [id: string | number
 
 uploadImage.definition = {
     methods: ["post"],
-    url: '/v1/listings/{id}/images',
+    url: '/v1/products/{id}/images',
 } satisfies RouteDefinition<["post"]>
 
 /**
-* @see \App\Http\Controllers\Api\ListingController::uploadImage
- * @see app/Http/Controllers/Api/ListingController.php:192
- * @route '/v1/listings/{id}/images'
+* @see \App\Http\Controllers\Api\ProductController::uploadImage
+ * @see app/Http/Controllers/Api/ProductController.php:131
+ * @route '/v1/products/{id}/images'
  */
 uploadImage.url = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -441,9 +441,9 @@ uploadImage.url = (args: { id: string | number } | [id: string | number ] | stri
 }
 
 /**
-* @see \App\Http\Controllers\Api\ListingController::uploadImage
- * @see app/Http/Controllers/Api/ListingController.php:192
- * @route '/v1/listings/{id}/images'
+* @see \App\Http\Controllers\Api\ProductController::uploadImage
+ * @see app/Http/Controllers/Api/ProductController.php:131
+ * @route '/v1/products/{id}/images'
  */
 uploadImage.post = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: uploadImage.url(args, options),
@@ -451,9 +451,9 @@ uploadImage.post = (args: { id: string | number } | [id: string | number ] | str
 })
 
     /**
-* @see \App\Http\Controllers\Api\ListingController::uploadImage
- * @see app/Http/Controllers/Api/ListingController.php:192
- * @route '/v1/listings/{id}/images'
+* @see \App\Http\Controllers\Api\ProductController::uploadImage
+ * @see app/Http/Controllers/Api/ProductController.php:131
+ * @route '/v1/products/{id}/images'
  */
     const uploadImageForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: uploadImage.url(args, options),
@@ -461,9 +461,9 @@ uploadImage.post = (args: { id: string | number } | [id: string | number ] | str
     })
 
             /**
-* @see \App\Http\Controllers\Api\ListingController::uploadImage
- * @see app/Http/Controllers/Api/ListingController.php:192
- * @route '/v1/listings/{id}/images'
+* @see \App\Http\Controllers\Api\ProductController::uploadImage
+ * @see app/Http/Controllers/Api/ProductController.php:131
+ * @route '/v1/products/{id}/images'
  */
         uploadImageForm.post = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: uploadImage.url(args, options),
@@ -471,6 +471,6 @@ uploadImage.post = (args: { id: string | number } | [id: string | number ] | str
         })
     
     uploadImage.form = uploadImageForm
-const ListingController = { index, show, store, update, destroy, uploadImage }
+const ProductController = { index, show, store, update, destroy, uploadImage }
 
-export default ListingController
+export default ProductController

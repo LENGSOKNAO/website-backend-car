@@ -1,9 +1,9 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Seller\ProfileController::index
-* @see app/Http/Controllers/Seller/ProfileController.php:13
-* @route '/seller/profile'
-*/
+ * @see app/Http/Controllers/Seller/ProfileController.php:13
+ * @route '/seller/profile'
+ */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(options),
     method: 'get',
@@ -16,79 +16,72 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\Seller\ProfileController::index
-* @see app/Http/Controllers/Seller/ProfileController.php:13
-* @route '/seller/profile'
-*/
+ * @see app/Http/Controllers/Seller/ProfileController.php:13
+ * @route '/seller/profile'
+ */
 index.url = (options?: RouteQueryOptions) => {
-
-
-
-
     return index.definition.url + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Seller\ProfileController::index
-* @see app/Http/Controllers/Seller/ProfileController.php:13
-* @route '/seller/profile'
-*/
+ * @see app/Http/Controllers/Seller/ProfileController.php:13
+ * @route '/seller/profile'
+ */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(options),
     method: 'get',
 })
-
 /**
 * @see \App\Http\Controllers\Seller\ProfileController::index
-* @see app/Http/Controllers/Seller/ProfileController.php:13
-* @route '/seller/profile'
-*/
+ * @see app/Http/Controllers/Seller/ProfileController.php:13
+ * @route '/seller/profile'
+ */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: index.url(options),
     method: 'head',
 })
 
-/**
+    /**
 * @see \App\Http\Controllers\Seller\ProfileController::index
-* @see app/Http/Controllers/Seller/ProfileController.php:13
-* @route '/seller/profile'
-*/
-const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: index.url(options),
-    method: 'get',
-})
+ * @see app/Http/Controllers/Seller/ProfileController.php:13
+ * @route '/seller/profile'
+ */
+    const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: index.url(options),
+        method: 'get',
+    })
 
-/**
+            /**
 * @see \App\Http\Controllers\Seller\ProfileController::index
-* @see app/Http/Controllers/Seller/ProfileController.php:13
-* @route '/seller/profile'
-*/
-indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: index.url(options),
-    method: 'get',
-})
-
-/**
+ * @see app/Http/Controllers/Seller/ProfileController.php:13
+ * @route '/seller/profile'
+ */
+        indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: index.url(options),
+            method: 'get',
+        })
+            /**
 * @see \App\Http\Controllers\Seller\ProfileController::index
-* @see app/Http/Controllers/Seller/ProfileController.php:13
-* @route '/seller/profile'
-*/
-indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: index.url({
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'HEAD',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'get',
-})
-
-index.form = indexForm
-
+ * @see app/Http/Controllers/Seller/ProfileController.php:13
+ * @route '/seller/profile'
+ */
+        indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: index.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    index.form = indexForm
 /**
 * @see \App\Http\Controllers\Seller\ProfileController::update
-* @see app/Http/Controllers/Seller/ProfileController.php:23
-* @route '/seller/profile'
-*/
+ * @see app/Http/Controllers/Seller/ProfileController.php:23
+ * @route '/seller/profile'
+ */
 export const update = (options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(options),
     method: 'put',
@@ -101,64 +94,59 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Seller\ProfileController::update
-* @see app/Http/Controllers/Seller/ProfileController.php:23
-* @route '/seller/profile'
-*/
+ * @see app/Http/Controllers/Seller/ProfileController.php:23
+ * @route '/seller/profile'
+ */
 update.url = (options?: RouteQueryOptions) => {
-
-
-
-
     return update.definition.url + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Seller\ProfileController::update
-* @see app/Http/Controllers/Seller/ProfileController.php:23
-* @route '/seller/profile'
-*/
+ * @see app/Http/Controllers/Seller/ProfileController.php:23
+ * @route '/seller/profile'
+ */
 update.put = (options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(options),
     method: 'put',
 })
 
-/**
+    /**
 * @see \App\Http\Controllers\Seller\ProfileController::update
-* @see app/Http/Controllers/Seller/ProfileController.php:23
-* @route '/seller/profile'
-*/
-const updateForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-    action: update.url({
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'PUT',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'post',
-})
+ * @see app/Http/Controllers/Seller/ProfileController.php:23
+ * @route '/seller/profile'
+ */
+    const updateForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: update.url({
+                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                        _method: 'PUT',
+                        ...(options?.query ?? options?.mergeQuery ?? {}),
+                    }
+                }),
+        method: 'post',
+    })
 
-/**
+            /**
 * @see \App\Http\Controllers\Seller\ProfileController::update
-* @see app/Http/Controllers/Seller/ProfileController.php:23
-* @route '/seller/profile'
-*/
-updateForm.put = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-    action: update.url({
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'PUT',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'post',
-})
-
-update.form = updateForm
-
+ * @see app/Http/Controllers/Seller/ProfileController.php:23
+ * @route '/seller/profile'
+ */
+        updateForm.put = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: update.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'PUT',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'post',
+        })
+    
+    update.form = updateForm
 /**
 * @see \App\Http\Controllers\Seller\ProfileController::verification
-* @see app/Http/Controllers/Seller/ProfileController.php:37
-* @route '/seller/profile/verification'
-*/
+ * @see app/Http/Controllers/Seller/ProfileController.php:37
+ * @route '/seller/profile/verification'
+ */
 export const verification = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: verification.url(options),
     method: 'post',
@@ -171,55 +159,48 @@ verification.definition = {
 
 /**
 * @see \App\Http\Controllers\Seller\ProfileController::verification
-* @see app/Http/Controllers/Seller/ProfileController.php:37
-* @route '/seller/profile/verification'
-*/
+ * @see app/Http/Controllers/Seller/ProfileController.php:37
+ * @route '/seller/profile/verification'
+ */
 verification.url = (options?: RouteQueryOptions) => {
-
-
-
-
     return verification.definition.url + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Seller\ProfileController::verification
-* @see app/Http/Controllers/Seller/ProfileController.php:37
-* @route '/seller/profile/verification'
-*/
+ * @see app/Http/Controllers/Seller/ProfileController.php:37
+ * @route '/seller/profile/verification'
+ */
 verification.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: verification.url(options),
     method: 'post',
 })
 
-/**
+    /**
 * @see \App\Http\Controllers\Seller\ProfileController::verification
-* @see app/Http/Controllers/Seller/ProfileController.php:37
-* @route '/seller/profile/verification'
-*/
-const verificationForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-    action: verification.url(options),
-    method: 'post',
-})
+ * @see app/Http/Controllers/Seller/ProfileController.php:37
+ * @route '/seller/profile/verification'
+ */
+    const verificationForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: verification.url(options),
+        method: 'post',
+    })
 
-/**
+            /**
 * @see \App\Http\Controllers\Seller\ProfileController::verification
-* @see app/Http/Controllers/Seller/ProfileController.php:37
-* @route '/seller/profile/verification'
-*/
-verificationForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-    action: verification.url(options),
-    method: 'post',
-})
-
-verification.form = verificationForm
-
-
-
+ * @see app/Http/Controllers/Seller/ProfileController.php:37
+ * @route '/seller/profile/verification'
+ */
+        verificationForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: verification.url(options),
+            method: 'post',
+        })
+    
+    verification.form = verificationForm
 const profile = {
     index: Object.assign(index, index),
-    update: Object.assign(update, update),
-    verification: Object.assign(verification, verification),
+update: Object.assign(update, update),
+verification: Object.assign(verification, verification),
 }
 
 export default profile

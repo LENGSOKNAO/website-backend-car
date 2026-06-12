@@ -1,9 +1,9 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Api\MakeController::index
-* @see app/Http/Controllers/Api/MakeController.php:9
-* @route '/v1/makes'
-*/
+ * @see app/Http/Controllers/Api/MakeController.php:9
+ * @route '/v1/makes'
+ */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(options),
     method: 'get',
@@ -16,79 +16,72 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\Api\MakeController::index
-* @see app/Http/Controllers/Api/MakeController.php:9
-* @route '/v1/makes'
-*/
+ * @see app/Http/Controllers/Api/MakeController.php:9
+ * @route '/v1/makes'
+ */
 index.url = (options?: RouteQueryOptions) => {
-
-
-
-
     return index.definition.url + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\Api\MakeController::index
-* @see app/Http/Controllers/Api/MakeController.php:9
-* @route '/v1/makes'
-*/
+ * @see app/Http/Controllers/Api/MakeController.php:9
+ * @route '/v1/makes'
+ */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(options),
     method: 'get',
 })
-
 /**
 * @see \App\Http\Controllers\Api\MakeController::index
-* @see app/Http/Controllers/Api/MakeController.php:9
-* @route '/v1/makes'
-*/
+ * @see app/Http/Controllers/Api/MakeController.php:9
+ * @route '/v1/makes'
+ */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: index.url(options),
     method: 'head',
 })
 
-/**
+    /**
 * @see \App\Http\Controllers\Api\MakeController::index
-* @see app/Http/Controllers/Api/MakeController.php:9
-* @route '/v1/makes'
-*/
-const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: index.url(options),
-    method: 'get',
-})
+ * @see app/Http/Controllers/Api/MakeController.php:9
+ * @route '/v1/makes'
+ */
+    const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: index.url(options),
+        method: 'get',
+    })
 
-/**
+            /**
 * @see \App\Http\Controllers\Api\MakeController::index
-* @see app/Http/Controllers/Api/MakeController.php:9
-* @route '/v1/makes'
-*/
-indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: index.url(options),
-    method: 'get',
-})
-
-/**
+ * @see app/Http/Controllers/Api/MakeController.php:9
+ * @route '/v1/makes'
+ */
+        indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: index.url(options),
+            method: 'get',
+        })
+            /**
 * @see \App\Http\Controllers\Api\MakeController::index
-* @see app/Http/Controllers/Api/MakeController.php:9
-* @route '/v1/makes'
-*/
-indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: index.url({
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'HEAD',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'get',
-})
-
-index.form = indexForm
-
+ * @see app/Http/Controllers/Api/MakeController.php:9
+ * @route '/v1/makes'
+ */
+        indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: index.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    index.form = indexForm
 /**
 * @see \App\Http\Controllers\Api\MakeController::show
-* @see app/Http/Controllers/Api/MakeController.php:16
-* @route '/v1/makes/{id}'
-*/
+ * @see app/Http/Controllers/Api/MakeController.php:16
+ * @route '/v1/makes/{id}'
+ */
 export const show = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
@@ -101,27 +94,26 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Api\MakeController::show
-* @see app/Http/Controllers/Api/MakeController.php:16
-* @route '/v1/makes/{id}'
-*/
+ * @see app/Http/Controllers/Api/MakeController.php:16
+ * @route '/v1/makes/{id}'
+ */
 show.url = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { id: args }
     }
 
-
+    
     if (Array.isArray(args)) {
         args = {
-            id: args[0],
-        }
+                    id: args[0],
+                }
     }
 
     args = applyUrlDefaults(args)
 
-
     const parsedArgs = {
-        id: args.id,
-    }
+                        id: args.id,
+                }
 
     return show.definition.url
             .replace('{id}', parsedArgs.id.toString())
@@ -130,61 +122,58 @@ show.url = (args: { id: string | number } | [id: string | number ] | string | nu
 
 /**
 * @see \App\Http\Controllers\Api\MakeController::show
-* @see app/Http/Controllers/Api/MakeController.php:16
-* @route '/v1/makes/{id}'
-*/
+ * @see app/Http/Controllers/Api/MakeController.php:16
+ * @route '/v1/makes/{id}'
+ */
 show.get = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
-
 /**
 * @see \App\Http\Controllers\Api\MakeController::show
-* @see app/Http/Controllers/Api/MakeController.php:16
-* @route '/v1/makes/{id}'
-*/
+ * @see app/Http/Controllers/Api/MakeController.php:16
+ * @route '/v1/makes/{id}'
+ */
 show.head = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: show.url(args, options),
     method: 'head',
 })
 
-/**
+    /**
 * @see \App\Http\Controllers\Api\MakeController::show
-* @see app/Http/Controllers/Api/MakeController.php:16
-* @route '/v1/makes/{id}'
-*/
-const showForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: show.url(args, options),
-    method: 'get',
-})
+ * @see app/Http/Controllers/Api/MakeController.php:16
+ * @route '/v1/makes/{id}'
+ */
+    const showForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: show.url(args, options),
+        method: 'get',
+    })
 
-/**
+            /**
 * @see \App\Http\Controllers\Api\MakeController::show
-* @see app/Http/Controllers/Api/MakeController.php:16
-* @route '/v1/makes/{id}'
-*/
-showForm.get = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: show.url(args, options),
-    method: 'get',
-})
-
-/**
+ * @see app/Http/Controllers/Api/MakeController.php:16
+ * @route '/v1/makes/{id}'
+ */
+        showForm.get = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: show.url(args, options),
+            method: 'get',
+        })
+            /**
 * @see \App\Http\Controllers\Api\MakeController::show
-* @see app/Http/Controllers/Api/MakeController.php:16
-* @route '/v1/makes/{id}'
-*/
-showForm.head = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: show.url(args, {
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'HEAD',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'get',
-})
-
-show.form = showForm
-
+ * @see app/Http/Controllers/Api/MakeController.php:16
+ * @route '/v1/makes/{id}'
+ */
+        showForm.head = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: show.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    show.form = showForm
 const MakeController = { index, show }
 
 export default MakeController
