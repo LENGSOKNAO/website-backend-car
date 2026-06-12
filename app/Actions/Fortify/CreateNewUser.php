@@ -5,6 +5,7 @@ namespace App\Actions\Fortify;
 use App\Concerns\PasswordValidationRules;
 use App\Concerns\ProfileValidationRules;
 use App\Models\User;
+use App\Models\Role;
 use App\Models\UserRole;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -27,7 +28,10 @@ class CreateNewUser implements CreatesNewUsers
             'role' => ['required', Rule::in(['buyer', 'seller'])],
         ])->validate();
 
-        $role = UserRole::where('name', $input['role'])->first();
+        $role = UserRole::firstOrCreate(
+            ['name' => $input['role']],
+            ['description' => ucfirst($input['role']) . ' role']
+        );
 
         $user = User::create([
             'role_id' => $role?->id,
@@ -36,7 +40,8 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $input['password'],
         ]);
 
-        $user->assignRole($input['role']);
+        $spatieRole = Role::firstOrCreate(['name' => $input['role']]);
+        $user->assignRole($spatieRole);
 
         return $user;
     }

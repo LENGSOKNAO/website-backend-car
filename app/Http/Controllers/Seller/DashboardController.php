@@ -33,7 +33,7 @@ class DashboardController extends Controller
             ->whereIn('status', ['confirmed', 'completed', 'processing'])
             ->where('placed_at', '>=', now()->subMonths(6))
             ->select(
-                DB::raw("to_char(placed_at, 'YYYY-MM') as month"),
+                DB::raw("strftime('%Y-%m', placed_at) as month"),
                 DB::raw('SUM(total) as revenue')
             )
             ->groupBy('month')
@@ -99,7 +99,7 @@ class DashboardController extends Controller
             ->whereIn('status', ['confirmed', 'completed', 'processing'])
             ->where('placed_at', '>=', now()->subMonths(6))
             ->select(
-                DB::raw("to_char(placed_at, 'YYYY-MM') as month"),
+                DB::raw("strftime('%Y-%m', placed_at) as month"),
                 DB::raw('SUM(total) as revenue')
             )
             ->groupBy('month')

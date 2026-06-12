@@ -21,6 +21,7 @@ use App\Http\Controllers\Buyer\SavedListingController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\Seller\ProfileController;
 use App\Http\Controllers\Seller\ReviewController;
+use App\Models\Role;
 use App\Models\StoredFile;
 
 use Illuminate\Support\Facades\Http;
@@ -147,6 +148,7 @@ Route::middleware('auth')->get('debug/employee-test', function () {
             'password' => bcrypt('p'), 'type' => 'employee', 'is_verified' => true,
             'join_date' => now(), 'last_active' => now(),
         ]);
+        Role::firstOrCreate(['name' => 'staff']);
         $user->assignRole('staff');
         $user->delete();
         return response('OK: Employee creation works');
@@ -163,7 +165,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         if (empty($roles) && $user->userRole) {
             $roleName = $user->userRole->name;
             if (in_array($roleName, ['buyer', 'seller'])) {
-                $user->assignRole($roleName);
+                $spatieRole = Role::firstOrCreate(['name' => $roleName]);
+                $user->assignRole($spatieRole);
                 $roles = [$roleName];
             }
         }

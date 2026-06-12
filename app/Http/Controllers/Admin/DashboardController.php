@@ -65,7 +65,7 @@ class DashboardController extends Controller
 
         $rawRevenue = Order::where('placed_at', '>=', now()->subMonths(6))
             ->select(
-                DB::raw("to_char(placed_at, 'YYYY-MM') as month"),
+                DB::raw("strftime('%Y-%m', placed_at) as month"),
                 'status',
                 DB::raw('SUM(total) as revenue')
             )
@@ -121,7 +121,7 @@ class DashboardController extends Controller
         $rawInventory = CarListing::whereNotNull('created_at')
             ->where('created_at', '>=', now()->subMonths(6))
             ->select(
-                DB::raw("to_char(created_at, 'YYYY-MM') as month"),
+                DB::raw("strftime('%Y-%m', created_at) as month"),
                 DB::raw("COALESCE(condition, 'other') as cond"),
                 DB::raw('COUNT(*) as count')
             )

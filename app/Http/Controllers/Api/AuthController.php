@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Role;
 use App\Models\User;
 use App\Models\UserRole;
 use Illuminate\Http\JsonResponse;
@@ -92,8 +93,12 @@ class AuthController extends ApiController
             return $this->error('Validation failed', 422, $validator->errors());
         }
 
-        $buyerRole = UserRole::where('name', 'buyer')->first();
+        $buyerRole = UserRole::firstOrCreate(
+            ['name' => 'buyer'],
+            ['description' => 'Buyer role']
+        );
 
+        $spatieRole = Role::firstOrCreate(['name' => 'buyer']);
         $user = User::create([
             'role_id' => $buyerRole?->id,
             'full_name' => $request->full_name,
@@ -104,6 +109,7 @@ class AuthController extends ApiController
             'join_date' => now(),
             'last_active' => now(),
         ]);
+        $user->assignRole($spatieRole);
 
         $token = auth('api')->login($user);
 
