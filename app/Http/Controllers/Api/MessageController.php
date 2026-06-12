@@ -95,21 +95,19 @@ class MessageController extends ApiController
             return $this->error('Validation failed', 422, $validator->errors());
         }
 
-        $conversation = Conversation::where(function ($q) use ($request) {
-            $q->where([
-                ['sender_id', auth()->id()],
-                ['receiver_id', $request->receiver_id],
-            ])->orWhere([
-                ['sender_id', $request->receiver_id],
-                ['receiver_id', auth()->id()],
-            ]);
-        });
+        $conversation = null;
 
         if ($request->listing_id) {
-            $conversation->where('listing_id', $request->listing_id);
+            $conversation = Conversation::where(function ($q) use ($request) {
+                $q->where([
+                    ['sender_id', auth()->id()],
+                    ['receiver_id', $request->receiver_id],
+                ])->orWhere([
+                    ['sender_id', $request->receiver_id],
+                    ['receiver_id', auth()->id()],
+                ]);
+            })->where('listing_id', $request->listing_id)->first();
         }
-
-        $conversation = $conversation->first();
 
         if (! $conversation) {
             $conversation = Conversation::create([

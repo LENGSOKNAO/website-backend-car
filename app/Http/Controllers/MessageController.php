@@ -137,21 +137,19 @@ class MessageController extends Controller
             'content' => 'required|string|max:5000',
         ]);
 
-        $conversation = Conversation::where(function ($q) use ($validated) {
-            $q->where([
-                ['sender_id', auth()->id()],
-                ['receiver_id', $validated['receiver_id']],
-            ])->orWhere([
-                ['sender_id', $validated['receiver_id']],
-                ['receiver_id', auth()->id()],
-            ]);
-        });
+        $conversation = null;
 
         if (! empty($validated['listing_id'])) {
-            $conversation->where('listing_id', $validated['listing_id']);
+            $conversation = Conversation::where(function ($q) use ($validated) {
+                $q->where([
+                    ['sender_id', auth()->id()],
+                    ['receiver_id', $validated['receiver_id']],
+                ])->orWhere([
+                    ['sender_id', $validated['receiver_id']],
+                    ['receiver_id', auth()->id()],
+                ]);
+            })->where('listing_id', $validated['listing_id'])->first();
         }
-
-        $conversation = $conversation->first();
 
         if (! $conversation) {
             $conversation = Conversation::create([
