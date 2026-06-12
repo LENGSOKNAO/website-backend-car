@@ -10,6 +10,6 @@ Broadcast::channel('App.Models.Conversation.{id}', function ($user, $id) {
         return false;
     }
 
-    return (int) $user->id === (int) $conversation->sender_id ||
-           (int) $user->id === (int) $conversation->receiver_id;
+    return (string) $user->id === (string) $conversation->sender_id ||
+           (string) $user->id === (string) $conversation->receiver_id;
 });
