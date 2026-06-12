@@ -17,12 +17,13 @@ class MessageController extends Controller
     {
         $authId = auth()->id();
 
-        $users = User::where('id', '!=', $authId)
-            ->select('id', 'full_name', 'email', 'type')
-            ->get()
-            ->map(function ($user) use ($authId) {
-                $hasOrdered = false;
-                if ($user->type === 'customer') {
+        try {
+            $users = User::where('id', '!=', $authId)
+                ->select('id', 'full_name', 'email')
+                ->get()
+                ->map(function ($user) use ($authId) {
+                    $hasOrdered = false;
+
                     try {
                         $hasOrdered = Order::where('buyer_id', $user->id)
                             ->where('seller_id', $authId)
@@ -30,13 +31,16 @@ class MessageController extends Controller
                     } catch (\Throwable $e) {
                         Log::warning('Failed to check order existence: ' . $e->getMessage());
                     }
-                }
 
-                $data = $user->toArray();
-                $data['has_ordered_from_me'] = $hasOrdered;
+                    $data = $user->toArray();
+                    $data['has_ordered_from_me'] = $hasOrdered;
 
-                return $data;
-            });
+                    return $data;
+                });
+        } catch (\Throwable $e) {
+            Log::error('Failed to load users for messages/create: ' . $e->getMessage());
+            $users = [];
+        }
 
         return Inertia::render('messages/create', [
             'users' => $users,
