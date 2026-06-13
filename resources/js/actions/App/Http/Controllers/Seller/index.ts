@@ -2,6 +2,7 @@ import Admin from './Admin'
 import DashboardController from './DashboardController'
 import CarController from './CarController'
 import OrderController from './OrderController'
+import InquiryController from './InquiryController'
 import PreOrderController from './PreOrderController'
 import ReviewController from './ReviewController'
 import ProfileController from './ProfileController'
@@ -12,6 +13,7 @@ const Seller = {
 DashboardController: Object.assign(DashboardController, DashboardController),
 CarController: Object.assign(CarController, CarController),
 OrderController: Object.assign(OrderController, OrderController),
+InquiryController: Object.assign(InquiryController, InquiryController),
 PreOrderController: Object.assign(PreOrderController, PreOrderController),
 ReviewController: Object.assign(ReviewController, ReviewController),
 ProfileController: Object.assign(ProfileController, ProfileController),

@@ -1,7 +1,7 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
-* @see \InquiryController::index
- * @see [unknown]:0
+* @see \App\Http\Controllers\Seller\InquiryController::index
+ * @see app/Http/Controllers/Seller/InquiryController.php:12
  * @route '/seller/inquiries'
  */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -15,8 +15,8 @@ index.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \InquiryController::index
- * @see [unknown]:0
+* @see \App\Http\Controllers\Seller\InquiryController::index
+ * @see app/Http/Controllers/Seller/InquiryController.php:12
  * @route '/seller/inquiries'
  */
 index.url = (options?: RouteQueryOptions) => {
@@ -24,8 +24,8 @@ index.url = (options?: RouteQueryOptions) => {
 }
 
 /**
-* @see \InquiryController::index
- * @see [unknown]:0
+* @see \App\Http\Controllers\Seller\InquiryController::index
+ * @see app/Http/Controllers/Seller/InquiryController.php:12
  * @route '/seller/inquiries'
  */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -33,8 +33,8 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     method: 'get',
 })
 /**
-* @see \InquiryController::index
- * @see [unknown]:0
+* @see \App\Http\Controllers\Seller\InquiryController::index
+ * @see app/Http/Controllers/Seller/InquiryController.php:12
  * @route '/seller/inquiries'
  */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -43,8 +43,8 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
     /**
-* @see \InquiryController::index
- * @see [unknown]:0
+* @see \App\Http\Controllers\Seller\InquiryController::index
+ * @see app/Http/Controllers/Seller/InquiryController.php:12
  * @route '/seller/inquiries'
  */
     const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -53,8 +53,8 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     })
 
             /**
-* @see \InquiryController::index
- * @see [unknown]:0
+* @see \App\Http\Controllers\Seller\InquiryController::index
+ * @see app/Http/Controllers/Seller/InquiryController.php:12
  * @route '/seller/inquiries'
  */
         indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -62,8 +62,8 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             method: 'get',
         })
             /**
-* @see \InquiryController::index
- * @see [unknown]:0
+* @see \App\Http\Controllers\Seller\InquiryController::index
+ * @see app/Http/Controllers/Seller/InquiryController.php:12
  * @route '/seller/inquiries'
  */
         indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -78,8 +78,8 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     
     index.form = indexForm
 /**
-* @see \InquiryController::show
- * @see [unknown]:0
+* @see \App\Http\Controllers\Seller\InquiryController::show
+ * @see app/Http/Controllers/Seller/InquiryController.php:43
  * @route '/seller/inquiries/{inquiry}'
  */
 export const show = (args: { inquiry: string | number } | [inquiry: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -93,8 +93,8 @@ show.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \InquiryController::show
- * @see [unknown]:0
+* @see \App\Http\Controllers\Seller\InquiryController::show
+ * @see app/Http/Controllers/Seller/InquiryController.php:43
  * @route '/seller/inquiries/{inquiry}'
  */
 show.url = (args: { inquiry: string | number } | [inquiry: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -121,8 +121,8 @@ show.url = (args: { inquiry: string | number } | [inquiry: string | number ] | s
 }
 
 /**
-* @see \InquiryController::show
- * @see [unknown]:0
+* @see \App\Http\Controllers\Seller\InquiryController::show
+ * @see app/Http/Controllers/Seller/InquiryController.php:43
  * @route '/seller/inquiries/{inquiry}'
  */
 show.get = (args: { inquiry: string | number } | [inquiry: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -130,8 +130,8 @@ show.get = (args: { inquiry: string | number } | [inquiry: string | number ] | s
     method: 'get',
 })
 /**
-* @see \InquiryController::show
- * @see [unknown]:0
+* @see \App\Http\Controllers\Seller\InquiryController::show
+ * @see app/Http/Controllers/Seller/InquiryController.php:43
  * @route '/seller/inquiries/{inquiry}'
  */
 show.head = (args: { inquiry: string | number } | [inquiry: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -140,8 +140,8 @@ show.head = (args: { inquiry: string | number } | [inquiry: string | number ] | 
 })
 
     /**
-* @see \InquiryController::show
- * @see [unknown]:0
+* @see \App\Http\Controllers\Seller\InquiryController::show
+ * @see app/Http/Controllers/Seller/InquiryController.php:43
  * @route '/seller/inquiries/{inquiry}'
  */
     const showForm = (args: { inquiry: string | number } | [inquiry: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -150,8 +150,8 @@ show.head = (args: { inquiry: string | number } | [inquiry: string | number ] | 
     })
 
             /**
-* @see \InquiryController::show
- * @see [unknown]:0
+* @see \App\Http\Controllers\Seller\InquiryController::show
+ * @see app/Http/Controllers/Seller/InquiryController.php:43
  * @route '/seller/inquiries/{inquiry}'
  */
         showForm.get = (args: { inquiry: string | number } | [inquiry: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -159,8 +159,8 @@ show.head = (args: { inquiry: string | number } | [inquiry: string | number ] | 
             method: 'get',
         })
             /**
-* @see \InquiryController::show
- * @see [unknown]:0
+* @see \App\Http\Controllers\Seller\InquiryController::show
+ * @see app/Http/Controllers/Seller/InquiryController.php:43
  * @route '/seller/inquiries/{inquiry}'
  */
         showForm.head = (args: { inquiry: string | number } | [inquiry: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -175,8 +175,8 @@ show.head = (args: { inquiry: string | number } | [inquiry: string | number ] | 
     
     show.form = showForm
 /**
-* @see \InquiryController::update
- * @see [unknown]:0
+* @see \App\Http\Controllers\Seller\InquiryController::update
+ * @see app/Http/Controllers/Seller/InquiryController.php:58
  * @route '/seller/inquiries/{inquiry}'
  */
 export const update = (args: { inquiry: string | number } | [inquiry: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -190,8 +190,8 @@ update.definition = {
 } satisfies RouteDefinition<["put"]>
 
 /**
-* @see \InquiryController::update
- * @see [unknown]:0
+* @see \App\Http\Controllers\Seller\InquiryController::update
+ * @see app/Http/Controllers/Seller/InquiryController.php:58
  * @route '/seller/inquiries/{inquiry}'
  */
 update.url = (args: { inquiry: string | number } | [inquiry: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -218,8 +218,8 @@ update.url = (args: { inquiry: string | number } | [inquiry: string | number ] |
 }
 
 /**
-* @see \InquiryController::update
- * @see [unknown]:0
+* @see \App\Http\Controllers\Seller\InquiryController::update
+ * @see app/Http/Controllers/Seller/InquiryController.php:58
  * @route '/seller/inquiries/{inquiry}'
  */
 update.put = (args: { inquiry: string | number } | [inquiry: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -228,8 +228,8 @@ update.put = (args: { inquiry: string | number } | [inquiry: string | number ] |
 })
 
     /**
-* @see \InquiryController::update
- * @see [unknown]:0
+* @see \App\Http\Controllers\Seller\InquiryController::update
+ * @see app/Http/Controllers/Seller/InquiryController.php:58
  * @route '/seller/inquiries/{inquiry}'
  */
     const updateForm = (args: { inquiry: string | number } | [inquiry: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -243,8 +243,8 @@ update.put = (args: { inquiry: string | number } | [inquiry: string | number ] |
     })
 
             /**
-* @see \InquiryController::update
- * @see [unknown]:0
+* @see \App\Http\Controllers\Seller\InquiryController::update
+ * @see app/Http/Controllers/Seller/InquiryController.php:58
  * @route '/seller/inquiries/{inquiry}'
  */
         updateForm.put = (args: { inquiry: string | number } | [inquiry: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

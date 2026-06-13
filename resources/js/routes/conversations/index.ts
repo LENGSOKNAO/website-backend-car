@@ -1,6 +1,6 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
 /**
- * @see routes/web.php:325
+ * @see routes/web.php:326
  * @route '/conversations/{conversation}'
  */
 export const show = (args: { conversation: string | number } | [conversation: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -14,7 +14,7 @@ show.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:325
+ * @see routes/web.php:326
  * @route '/conversations/{conversation}'
  */
 show.url = (args: { conversation: string | number } | [conversation: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -41,7 +41,7 @@ show.url = (args: { conversation: string | number } | [conversation: string | nu
 }
 
 /**
- * @see routes/web.php:325
+ * @see routes/web.php:326
  * @route '/conversations/{conversation}'
  */
 show.get = (args: { conversation: string | number } | [conversation: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -49,7 +49,7 @@ show.get = (args: { conversation: string | number } | [conversation: string | nu
     method: 'get',
 })
 /**
- * @see routes/web.php:325
+ * @see routes/web.php:326
  * @route '/conversations/{conversation}'
  */
 show.head = (args: { conversation: string | number } | [conversation: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -58,7 +58,7 @@ show.head = (args: { conversation: string | number } | [conversation: string | n
 })
 
     /**
- * @see routes/web.php:325
+ * @see routes/web.php:326
  * @route '/conversations/{conversation}'
  */
     const showForm = (args: { conversation: string | number } | [conversation: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -67,7 +67,7 @@ show.head = (args: { conversation: string | number } | [conversation: string | n
     })
 
             /**
- * @see routes/web.php:325
+ * @see routes/web.php:326
  * @route '/conversations/{conversation}'
  */
         showForm.get = (args: { conversation: string | number } | [conversation: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -75,7 +75,7 @@ show.head = (args: { conversation: string | number } | [conversation: string | n
             method: 'get',
         })
             /**
- * @see routes/web.php:325
+ * @see routes/web.php:326
  * @route '/conversations/{conversation}'
  */
         showForm.head = (args: { conversation: string | number } | [conversation: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

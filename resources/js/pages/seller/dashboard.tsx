@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import seller from '@/routes/seller';
+import { api } from '@/lib/api';
 
 // Import Echo for real-time broadcasting
 import Echo from 'laravel-echo';
@@ -94,8 +95,7 @@ export default function SellerDashboard({ stats }: { stats: Stats }) {
         // Listen for the seller-dashboard-updated event
         channel.listen('.seller-dashboard-updated', (e: any) => {
             // When we receive an update, fetch the latest dashboard data
-            fetch(`/api/v1/seller/dashboard`)
-                .then(response => response.json())
+            api.get('/seller/dashboard')
                 .then(data => {
                     setDashboardStats(data);
                 })
@@ -107,11 +107,8 @@ export default function SellerDashboard({ stats }: { stats: Stats }) {
         // Also fetch initial data
         const fetchInitialData = async () => {
             try {
-                const response = await fetch(`/api/v1/seller/dashboard`);
-                if (response.ok) {
-                    const data = await response.json();
-                    setDashboardStats(data);
-                }
+                const data = await api.get('/seller/dashboard');
+                setDashboardStats(data);
             } catch (error) {
                 console.error('Failed to fetch initial dashboard data:', error);
             }
