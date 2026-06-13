@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\SavedListingController;
 use App\Http\Controllers\Api\UserController as ApiUserController;
+use App\Http\Controllers\Api\SellerCarController;
 use App\Http\Controllers\Seller\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Broadcast;
@@ -84,6 +85,15 @@ Route::prefix('v1')->group(function () {
         Route::delete('listings/{id}', [ListingController::class, 'destroy']);
         Route::post('listings/{id}/images', [ListingController::class, 'uploadImage']);
         Route::get('my-listings', [ListingController::class, 'myListings']);
+
+        // Seller Cars (auth required)
+        Route::get('cars', [SellerCarController::class, 'index']);
+        Route::post('cars', [SellerCarController::class, 'store']);
+        Route::get('cars/create', [SellerCarController::class, 'create']);
+        Route::get('cars/{id}', [SellerCarController::class, 'show']);
+        Route::get('cars/{id}/edit', [SellerCarController::class, 'edit']);
+        Route::put('cars/{id}', [SellerCarController::class, 'update']);
+        Route::delete('cars/{id}', [SellerCarController::class, 'destroy']);
 
         // Products — write (auth required)
         Route::post('products', [ProductController::class, 'store']);
