@@ -28,6 +28,7 @@ Route::prefix('v1')->group(function () {
     Route::get('web/boxRight', [BannerController::class, 'boxRight']);
     Route::get('web/boxLeft', [BannerController::class, 'boxLeft']);
     Route::get('web/boxTen', [BannerController::class, 'boxTen']);
+    Route::get('web/boxOneButtom', [BannerController::class, 'boxOneButtom']);
     Route::get('web/brand/{slug}', [BannerController::class, 'brand']);
     Route::get('web', [BannerController::class, 'index']);
     Route::get('web/{id}', [BannerController::class, 'show']);

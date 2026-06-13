@@ -266,6 +266,43 @@ class BannerController extends ApiController
         return $this->success($boxOne);
     }
 
+    public function boxOneButtom()
+    {
+        $boxOneButtom = Banner::ordered()->active()
+            ->byType('boxonebuttom')
+            ->with('user')
+            ->get()
+            ->map(fn ($b) => [
+                'id' => $b->id,
+                'title' => $b->title,
+                'subtitle' => $b->subtitle,
+                'tagline' => $b->tagline,
+                'description' => $b->description,
+                'image' => $b->image_url,
+                'badge' => $b->badge_text,
+                'button_text' => $b->button_text,
+                'button_url' => $b->button_url,
+                'button_text_2' => $b->button_text_2,
+                'button_url_2' => $b->button_url_2,
+                'sort_order' => $b->sort_order,
+                'user' => $b->user ? [
+                    'id' => $b->user->id,
+                    'name' => $b->user->full_name,
+                    'email' => $b->user->email,
+                    'phone' => $b->user->phone,
+                    'avatar' => $b->user->avatar_url,
+                    'location' => $b->user->location,
+                    'dealer_name' => $b->user->dealer_name,
+                    'type' => $b->user->type,
+                    'is_verified' => $b->user->is_verified,
+                    'is_dealer' => $b->user->is_dealer,
+                    'created_at' => $b->user->created_at,
+                ] : null,
+            ]);
+
+        return $this->success($boxOneButtom);
+    }
+
     public function boxRight()
     {
         $boxRight = Banner::ordered()->active()
