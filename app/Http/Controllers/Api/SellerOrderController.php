@@ -145,13 +145,14 @@ class SellerOrderController extends ApiController
 
         $validated = $request->validate([
             'status' => 'required|string|in:pending,paid,overdue',
+            'paid_at' => 'nullable|date',
         ]);
 
         $installment = $order->installments()->findOrFail($installmentId);
         $installment->update(['status' => $validated['status']]);
 
         if ($validated['status'] === 'paid') {
-            $installment->update(['paid_at' => now()]);
+            $installment->update(['paid_at' => $validated['paid_at'] ?? now()]);
         } else {
             $installment->update(['paid_at' => null]);
         }
