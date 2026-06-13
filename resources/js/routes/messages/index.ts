@@ -309,7 +309,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\MessageController::reply
- * @see app/Http/Controllers/MessageController.php:184
+ * @see app/Http/Controllers/MessageController.php:182
  * @route '/messages/{message}/reply'
  */
 export const reply = (args: { message: string | number } | [message: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -324,7 +324,7 @@ reply.definition = {
 
 /**
 * @see \App\Http\Controllers\MessageController::reply
- * @see app/Http/Controllers/MessageController.php:184
+ * @see app/Http/Controllers/MessageController.php:182
  * @route '/messages/{message}/reply'
  */
 reply.url = (args: { message: string | number } | [message: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -352,7 +352,7 @@ reply.url = (args: { message: string | number } | [message: string | number ] | 
 
 /**
 * @see \App\Http\Controllers\MessageController::reply
- * @see app/Http/Controllers/MessageController.php:184
+ * @see app/Http/Controllers/MessageController.php:182
  * @route '/messages/{message}/reply'
  */
 reply.post = (args: { message: string | number } | [message: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -362,7 +362,7 @@ reply.post = (args: { message: string | number } | [message: string | number ] |
 
     /**
 * @see \App\Http\Controllers\MessageController::reply
- * @see app/Http/Controllers/MessageController.php:184
+ * @see app/Http/Controllers/MessageController.php:182
  * @route '/messages/{message}/reply'
  */
     const replyForm = (args: { message: string | number } | [message: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -372,7 +372,7 @@ reply.post = (args: { message: string | number } | [message: string | number ] |
 
             /**
 * @see \App\Http\Controllers\MessageController::reply
- * @see app/Http/Controllers/MessageController.php:184
+ * @see app/Http/Controllers/MessageController.php:182
  * @route '/messages/{message}/reply'
  */
         replyForm.post = (args: { message: string | number } | [message: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -383,7 +383,7 @@ reply.post = (args: { message: string | number } | [message: string | number ] |
     reply.form = replyForm
 /**
 * @see \App\Http\Controllers\MessageController::update
- * @see app/Http/Controllers/MessageController.php:211
+ * @see app/Http/Controllers/MessageController.php:209
  * @route '/messages/{message}'
  */
 export const update = (args: { message: string | number } | [message: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -398,7 +398,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\MessageController::update
- * @see app/Http/Controllers/MessageController.php:211
+ * @see app/Http/Controllers/MessageController.php:209
  * @route '/messages/{message}'
  */
 update.url = (args: { message: string | number } | [message: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -426,7 +426,7 @@ update.url = (args: { message: string | number } | [message: string | number ] |
 
 /**
 * @see \App\Http\Controllers\MessageController::update
- * @see app/Http/Controllers/MessageController.php:211
+ * @see app/Http/Controllers/MessageController.php:209
  * @route '/messages/{message}'
  */
 update.put = (args: { message: string | number } | [message: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -436,7 +436,7 @@ update.put = (args: { message: string | number } | [message: string | number ] |
 
     /**
 * @see \App\Http\Controllers\MessageController::update
- * @see app/Http/Controllers/MessageController.php:211
+ * @see app/Http/Controllers/MessageController.php:209
  * @route '/messages/{message}'
  */
     const updateForm = (args: { message: string | number } | [message: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -451,7 +451,7 @@ update.put = (args: { message: string | number } | [message: string | number ] |
 
             /**
 * @see \App\Http\Controllers\MessageController::update
- * @see app/Http/Controllers/MessageController.php:211
+ * @see app/Http/Controllers/MessageController.php:209
  * @route '/messages/{message}'
  */
         updateForm.put = (args: { message: string | number } | [message: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -467,7 +467,7 @@ update.put = (args: { message: string | number } | [message: string | number ] |
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\MessageController::destroy
- * @see app/Http/Controllers/MessageController.php:227
+ * @see app/Http/Controllers/MessageController.php:225
  * @route '/messages/{message}'
  */
 export const destroy = (args: { message: string | number } | [message: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -482,7 +482,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\MessageController::destroy
- * @see app/Http/Controllers/MessageController.php:227
+ * @see app/Http/Controllers/MessageController.php:225
  * @route '/messages/{message}'
  */
 destroy.url = (args: { message: string | number } | [message: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -510,7 +510,7 @@ destroy.url = (args: { message: string | number } | [message: string | number ] 
 
 /**
 * @see \App\Http\Controllers\MessageController::destroy
- * @see app/Http/Controllers/MessageController.php:227
+ * @see app/Http/Controllers/MessageController.php:225
  * @route '/messages/{message}'
  */
 destroy.delete = (args: { message: string | number } | [message: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -520,7 +520,7 @@ destroy.delete = (args: { message: string | number } | [message: string | number
 
     /**
 * @see \App\Http\Controllers\MessageController::destroy
- * @see app/Http/Controllers/MessageController.php:227
+ * @see app/Http/Controllers/MessageController.php:225
  * @route '/messages/{message}'
  */
     const destroyForm = (args: { message: string | number } | [message: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -535,7 +535,7 @@ destroy.delete = (args: { message: string | number } | [message: string | number
 
             /**
 * @see \App\Http\Controllers\MessageController::destroy
- * @see app/Http/Controllers/MessageController.php:227
+ * @see app/Http/Controllers/MessageController.php:225
  * @route '/messages/{message}'
  */
         destroyForm.delete = (args: { message: string | number } | [message: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -551,7 +551,7 @@ destroy.delete = (args: { message: string | number } | [message: string | number
     destroy.form = destroyForm
 /**
 * @see \App\Http\Controllers\MessageController::fetch
- * @see app/Http/Controllers/MessageController.php:236
+ * @see app/Http/Controllers/MessageController.php:234
  * @route '/messages/{conversation}/fetch'
  */
 export const fetch = (args: { conversation: string | number } | [conversation: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -566,7 +566,7 @@ fetch.definition = {
 
 /**
 * @see \App\Http\Controllers\MessageController::fetch
- * @see app/Http/Controllers/MessageController.php:236
+ * @see app/Http/Controllers/MessageController.php:234
  * @route '/messages/{conversation}/fetch'
  */
 fetch.url = (args: { conversation: string | number } | [conversation: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -594,7 +594,7 @@ fetch.url = (args: { conversation: string | number } | [conversation: string | n
 
 /**
 * @see \App\Http\Controllers\MessageController::fetch
- * @see app/Http/Controllers/MessageController.php:236
+ * @see app/Http/Controllers/MessageController.php:234
  * @route '/messages/{conversation}/fetch'
  */
 fetch.get = (args: { conversation: string | number } | [conversation: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -603,7 +603,7 @@ fetch.get = (args: { conversation: string | number } | [conversation: string | n
 })
 /**
 * @see \App\Http\Controllers\MessageController::fetch
- * @see app/Http/Controllers/MessageController.php:236
+ * @see app/Http/Controllers/MessageController.php:234
  * @route '/messages/{conversation}/fetch'
  */
 fetch.head = (args: { conversation: string | number } | [conversation: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -613,7 +613,7 @@ fetch.head = (args: { conversation: string | number } | [conversation: string | 
 
     /**
 * @see \App\Http\Controllers\MessageController::fetch
- * @see app/Http/Controllers/MessageController.php:236
+ * @see app/Http/Controllers/MessageController.php:234
  * @route '/messages/{conversation}/fetch'
  */
     const fetchForm = (args: { conversation: string | number } | [conversation: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -623,7 +623,7 @@ fetch.head = (args: { conversation: string | number } | [conversation: string | 
 
             /**
 * @see \App\Http\Controllers\MessageController::fetch
- * @see app/Http/Controllers/MessageController.php:236
+ * @see app/Http/Controllers/MessageController.php:234
  * @route '/messages/{conversation}/fetch'
  */
         fetchForm.get = (args: { conversation: string | number } | [conversation: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -632,7 +632,7 @@ fetch.head = (args: { conversation: string | number } | [conversation: string | 
         })
             /**
 * @see \App\Http\Controllers\MessageController::fetch
- * @see app/Http/Controllers/MessageController.php:236
+ * @see app/Http/Controllers/MessageController.php:234
  * @route '/messages/{conversation}/fetch'
  */
         fetchForm.head = (args: { conversation: string | number } | [conversation: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

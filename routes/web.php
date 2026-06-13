@@ -21,6 +21,7 @@ use App\Http\Controllers\Buyer\SavedListingController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\Seller\ProfileController;
 use App\Http\Controllers\Seller\ReviewController;
+use App\Http\Controllers\Seller\InquiryController;
 use App\Models\Role;
 use App\Models\StoredFile;
 
@@ -258,9 +259,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->only(['index', 'show', 'update']);
 
         // Seller inquiries
-        Route::get('inquiries', [InquiryController::class, 'index'])->name('inquiries.index');
-        Route::get('inquiries/{inquiry}', [InquiryController::class, 'show'])->name('inquiries.show');
-        Route::put('inquiries/{inquiry}', [InquiryController::class, 'update'])->name('inquiries.update');
+        Route::get('inquiries', [App\Http\Controllers\Seller\InquiryController::class, 'index'])->name('inquiries.index');
+        Route::get('inquiries/{inquiry}', [App\Http\Controllers\Seller\InquiryController::class, 'show'])->name('inquiries.show');
+        Route::put('inquiries/{inquiry}', [App\Http\Controllers\Seller\InquiryController::class, 'update'])->name('inquiries.update');
 
         // Seller pre-orders
         Route::get('pre-orders', [App\Http\Controllers\Seller\PreOrderController::class, 'index'])->name('pre-orders.index');

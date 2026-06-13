@@ -231,7 +231,7 @@ send.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     send.form = sendForm
 /**
 * @see \App\Http\Controllers\Api\MessageController::reply
- * @see app/Http/Controllers/Api/MessageController.php:154
+ * @see app/Http/Controllers/Api/MessageController.php:152
  * @route '/v1/conversations/{id}/reply'
  */
 export const reply = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -246,7 +246,7 @@ reply.definition = {
 
 /**
 * @see \App\Http\Controllers\Api\MessageController::reply
- * @see app/Http/Controllers/Api/MessageController.php:154
+ * @see app/Http/Controllers/Api/MessageController.php:152
  * @route '/v1/conversations/{id}/reply'
  */
 reply.url = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -274,7 +274,7 @@ reply.url = (args: { id: string | number } | [id: string | number ] | string | n
 
 /**
 * @see \App\Http\Controllers\Api\MessageController::reply
- * @see app/Http/Controllers/Api/MessageController.php:154
+ * @see app/Http/Controllers/Api/MessageController.php:152
  * @route '/v1/conversations/{id}/reply'
  */
 reply.post = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -284,7 +284,7 @@ reply.post = (args: { id: string | number } | [id: string | number ] | string | 
 
     /**
 * @see \App\Http\Controllers\Api\MessageController::reply
- * @see app/Http/Controllers/Api/MessageController.php:154
+ * @see app/Http/Controllers/Api/MessageController.php:152
  * @route '/v1/conversations/{id}/reply'
  */
     const replyForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -294,7 +294,7 @@ reply.post = (args: { id: string | number } | [id: string | number ] | string | 
 
             /**
 * @see \App\Http\Controllers\Api\MessageController::reply
- * @see app/Http/Controllers/Api/MessageController.php:154
+ * @see app/Http/Controllers/Api/MessageController.php:152
  * @route '/v1/conversations/{id}/reply'
  */
         replyForm.post = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -305,7 +305,7 @@ reply.post = (args: { id: string | number } | [id: string | number ] | string | 
     reply.form = replyForm
 /**
 * @see \App\Http\Controllers\Api\MessageController::markRead
- * @see app/Http/Controllers/Api/MessageController.php:199
+ * @see app/Http/Controllers/Api/MessageController.php:197
  * @route '/v1/conversations/{id}/read'
  */
 export const markRead = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -320,7 +320,7 @@ markRead.definition = {
 
 /**
 * @see \App\Http\Controllers\Api\MessageController::markRead
- * @see app/Http/Controllers/Api/MessageController.php:199
+ * @see app/Http/Controllers/Api/MessageController.php:197
  * @route '/v1/conversations/{id}/read'
  */
 markRead.url = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -348,7 +348,7 @@ markRead.url = (args: { id: string | number } | [id: string | number ] | string 
 
 /**
 * @see \App\Http\Controllers\Api\MessageController::markRead
- * @see app/Http/Controllers/Api/MessageController.php:199
+ * @see app/Http/Controllers/Api/MessageController.php:197
  * @route '/v1/conversations/{id}/read'
  */
 markRead.post = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -358,7 +358,7 @@ markRead.post = (args: { id: string | number } | [id: string | number ] | string
 
     /**
 * @see \App\Http\Controllers\Api\MessageController::markRead
- * @see app/Http/Controllers/Api/MessageController.php:199
+ * @see app/Http/Controllers/Api/MessageController.php:197
  * @route '/v1/conversations/{id}/read'
  */
     const markReadForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -368,7 +368,7 @@ markRead.post = (args: { id: string | number } | [id: string | number ] | string
 
             /**
 * @see \App\Http\Controllers\Api\MessageController::markRead
- * @see app/Http/Controllers/Api/MessageController.php:199
+ * @see app/Http/Controllers/Api/MessageController.php:197
  * @route '/v1/conversations/{id}/read'
  */
         markReadForm.post = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -379,7 +379,7 @@ markRead.post = (args: { id: string | number } | [id: string | number ] | string
     markRead.form = markReadForm
 /**
 * @see \App\Http\Controllers\Api\MessageController::edit
- * @see app/Http/Controllers/Api/MessageController.php:221
+ * @see app/Http/Controllers/Api/MessageController.php:219
  * @route '/v1/messages/{id}'
  */
 export const edit = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -394,7 +394,7 @@ edit.definition = {
 
 /**
 * @see \App\Http\Controllers\Api\MessageController::edit
- * @see app/Http/Controllers/Api/MessageController.php:221
+ * @see app/Http/Controllers/Api/MessageController.php:219
  * @route '/v1/messages/{id}'
  */
 edit.url = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -422,7 +422,7 @@ edit.url = (args: { id: string | number } | [id: string | number ] | string | nu
 
 /**
 * @see \App\Http\Controllers\Api\MessageController::edit
- * @see app/Http/Controllers/Api/MessageController.php:221
+ * @see app/Http/Controllers/Api/MessageController.php:219
  * @route '/v1/messages/{id}'
  */
 edit.put = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -432,7 +432,7 @@ edit.put = (args: { id: string | number } | [id: string | number ] | string | nu
 
     /**
 * @see \App\Http\Controllers\Api\MessageController::edit
- * @see app/Http/Controllers/Api/MessageController.php:221
+ * @see app/Http/Controllers/Api/MessageController.php:219
  * @route '/v1/messages/{id}'
  */
     const editForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -447,7 +447,7 @@ edit.put = (args: { id: string | number } | [id: string | number ] | string | nu
 
             /**
 * @see \App\Http\Controllers\Api\MessageController::edit
- * @see app/Http/Controllers/Api/MessageController.php:221
+ * @see app/Http/Controllers/Api/MessageController.php:219
  * @route '/v1/messages/{id}'
  */
         editForm.put = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -463,7 +463,7 @@ edit.put = (args: { id: string | number } | [id: string | number ] | string | nu
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Api\MessageController::deleteMethod
- * @see app/Http/Controllers/Api/MessageController.php:258
+ * @see app/Http/Controllers/Api/MessageController.php:256
  * @route '/v1/messages/{id}'
  */
 export const deleteMethod = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -478,7 +478,7 @@ deleteMethod.definition = {
 
 /**
 * @see \App\Http\Controllers\Api\MessageController::deleteMethod
- * @see app/Http/Controllers/Api/MessageController.php:258
+ * @see app/Http/Controllers/Api/MessageController.php:256
  * @route '/v1/messages/{id}'
  */
 deleteMethod.url = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -506,7 +506,7 @@ deleteMethod.url = (args: { id: string | number } | [id: string | number ] | str
 
 /**
 * @see \App\Http\Controllers\Api\MessageController::deleteMethod
- * @see app/Http/Controllers/Api/MessageController.php:258
+ * @see app/Http/Controllers/Api/MessageController.php:256
  * @route '/v1/messages/{id}'
  */
 deleteMethod.delete = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -516,7 +516,7 @@ deleteMethod.delete = (args: { id: string | number } | [id: string | number ] | 
 
     /**
 * @see \App\Http\Controllers\Api\MessageController::deleteMethod
- * @see app/Http/Controllers/Api/MessageController.php:258
+ * @see app/Http/Controllers/Api/MessageController.php:256
  * @route '/v1/messages/{id}'
  */
     const deleteMethodForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -531,7 +531,7 @@ deleteMethod.delete = (args: { id: string | number } | [id: string | number ] | 
 
             /**
 * @see \App\Http\Controllers\Api\MessageController::deleteMethod
- * @see app/Http/Controllers/Api/MessageController.php:258
+ * @see app/Http/Controllers/Api/MessageController.php:256
  * @route '/v1/messages/{id}'
  */
         deleteMethodForm.delete = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
