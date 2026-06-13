@@ -145,6 +145,7 @@ Route::prefix('v1')->group(function () {
         Route::get('seller/orders', [SellerOrderController::class, 'index']);
         Route::get('seller/orders/{id}', [SellerOrderController::class, 'show']);
         Route::put('seller/orders/{id}', [SellerOrderController::class, 'update']);
+        Route::put('seller/orders/{orderId}/installments/{installmentId}', [SellerOrderController::class, 'updateInstallment']);
 
         // Seller Dashboard API
         Route::post('seller/settings/{type}', [App\Http\Controllers\Seller\Admin\ImageController::class, 'store']);

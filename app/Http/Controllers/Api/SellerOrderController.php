@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Order;
+use App\Models\OrderInstallment;
 use App\Models\PreOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -136,5 +137,25 @@ class SellerOrderController extends ApiController
         $order->update($data);
 
         return $this->success($order->fresh(), "Order status updated to {$validated['status']}.");
+    }
+
+    public function updateInstallment(Request $request, string $orderId, string $installmentId)
+    {
+        $order = Order::where('seller_id', auth()->id())->findOrFail($orderId);
+
+        $validated = $request->validate([
+            'status' => 'required|string|in:pending,paid,overdue',
+        ]);
+
+        $installment = $order->installments()->findOrFail($installmentId);
+        $installment->update(['status' => $validated['status']]);
+
+        if ($validated['status'] === 'paid') {
+            $installment->update(['paid_at' => now()]);
+        } else {
+            $installment->update(['paid_at' => null]);
+        }
+
+        return $this->success($installment->fresh(), "Installment status updated to {$validated['status']}.");
     }
 }
