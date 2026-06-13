@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ListingController;
 use App\Http\Controllers\Api\MakeController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\SellerSaleController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\SavedListingController;
 use App\Http\Controllers\Api\UserController as ApiUserController;
@@ -134,6 +135,10 @@ Route::prefix('v1')->group(function () {
             Route::put('users/{user}', [ApiUserController::class, 'update']);
             Route::delete('users/{user}', [ApiUserController::class, 'destroy']);
         });
+
+        // Seller Sales API
+        Route::get('seller/sales', [SellerSaleController::class, 'index']);
+        Route::get('seller/sales/{id}', [SellerSaleController::class, 'show']);
 
         // Seller Dashboard API
         Route::post('seller/settings/{type}', [App\Http\Controllers\Seller\Admin\ImageController::class, 'store']);
