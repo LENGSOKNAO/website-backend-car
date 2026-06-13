@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\SavedListingController;
 use App\Http\Controllers\Api\UserController as ApiUserController;
 use App\Http\Controllers\Api\SellerCarController;
+use App\Http\Controllers\Api\SellerOrderController;
 use App\Http\Controllers\Seller\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Broadcast;
@@ -139,6 +140,11 @@ Route::prefix('v1')->group(function () {
         // Seller Sales API
         Route::get('seller/sales', [SellerSaleController::class, 'index']);
         Route::get('seller/sales/{id}', [SellerSaleController::class, 'show']);
+
+        // Seller Orders API
+        Route::get('seller/orders', [SellerOrderController::class, 'index']);
+        Route::get('seller/orders/{id}', [SellerOrderController::class, 'show']);
+        Route::put('seller/orders/{id}', [SellerOrderController::class, 'update']);
 
         // Seller Dashboard API
         Route::post('seller/settings/{type}', [App\Http\Controllers\Seller\Admin\ImageController::class, 'store']);
