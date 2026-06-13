@@ -59,6 +59,22 @@ class ListingController extends ApiController
         return response()->json(['data' => $listings]);
     }
 
+    public function myListings(Request $request)
+    {
+        $sellerId = auth()->id();
+
+        $query = CarListing::with(['make', 'model', 'category', 'primaryImage', 'features', 'seller'])
+            ->where('seller_id', $sellerId);
+
+        if ($request->status) {
+            $query->where('status', $request->status);
+        }
+
+        $listings = $query->latest()->paginate($request->per_page ?? 15);
+
+        return $this->success($listings);
+    }
+
     public function show(string $id)
     {
         $listing = CarListing::with([

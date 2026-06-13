@@ -83,6 +83,7 @@ Route::prefix('v1')->group(function () {
         Route::put('listings/{id}', [ListingController::class, 'update']);
         Route::delete('listings/{id}', [ListingController::class, 'destroy']);
         Route::post('listings/{id}/images', [ListingController::class, 'uploadImage']);
+        Route::get('my-listings', [ListingController::class, 'myListings']);
 
         // Products — write (auth required)
         Route::post('products', [ProductController::class, 'store']);
