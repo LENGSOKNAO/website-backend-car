@@ -17,7 +17,7 @@ class SellerOrderController extends ApiController
         $preOrders = collect();
 
         if ($tab === 'orders' || !$request->has('tab')) {
-            $orderQuery = Order::with('buyer', 'items.listing.make', 'items.listing.model', 'items.listing.primaryImage', 'installments')
+            $orderQuery = Order::with('buyer', 'items.listing.make', 'items.listing.model', 'items.listing.primaryImage', 'items.listing.images', 'installments')
                 ->where('seller_id', auth()->id());
 
             if ($request->search) {
@@ -39,11 +39,11 @@ class SellerOrderController extends ApiController
 
             $orders->getCollection()->each(function ($order) {
                 $order->items->each(function ($item) {
-                    $raw = $item->listing?->primaryImage?->image_url;
-                    $item->listing->image_url = $raw
+                    $listing = $item->listing;
+                    $raw = $listing->primaryImage?->image_url ?? $listing->images?->first()?->image_url;
+                    $listing->image_url = $raw
                         ? (str_starts_with($raw, 'http') ? $raw : '/storage/' . $raw)
                         : null;
-                    unset($item->listing->primaryImage);
                 });
 
                 if ($order->payment_method === 'finance' && $order->loan_term) {
@@ -59,6 +59,7 @@ class SellerOrderController extends ApiController
                     'listing.make:id,name',
                     'listing.model:id,name',
                     'listing.primaryImage',
+                    'listing.images',
                     'customer:id,full_name,email,phone',
                 ]);
 
@@ -77,6 +78,16 @@ class SellerOrderController extends ApiController
             }
 
             $preOrders = $poQuery->latest()->paginate($request->per_page ?? 15);
+
+            $preOrders->getCollection()->each(function ($preOrder) {
+                $listing = $preOrder->listing;
+                if ($listing) {
+                    $raw = $listing->primaryImage?->image_url ?? $listing->images?->first()?->image_url;
+                    $listing->image_url = $raw
+                        ? (str_starts_with($raw, 'http') ? $raw : '/storage/' . $raw)
+                        : null;
+                }
+            });
         }
 
         return $this->success([
@@ -91,18 +102,18 @@ class SellerOrderController extends ApiController
         $order = Order::with([
             'buyer',
             'items.listing' => function ($q) {
-                $q->with(['make', 'model', 'category', 'primaryImage']);
+                $q->with(['make', 'model', 'category', 'primaryImage', 'images']);
             },
             'transactions',
             'installments',
         ])->where('seller_id', auth()->id())->findOrFail($id);
 
         $order->items->each(function ($item) {
-            $raw = $item->listing?->primaryImage?->image_url;
-            $item->listing->image_url = $raw
+            $listing = $item->listing;
+            $raw = $listing->primaryImage?->image_url ?? $listing->images?->first()?->image_url;
+            $listing->image_url = $raw
                 ? (str_starts_with($raw, 'http') ? $raw : Storage::disk('public')->url($raw))
                 : null;
-            unset($item->listing->primaryImage);
         });
 
         return $this->success($order);
