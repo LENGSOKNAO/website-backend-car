@@ -57,6 +57,28 @@ Route::prefix('v1')->group(function () {
     Route::get('users/roles', [ApiUserController::class, 'roles']);
     Route::get('users/{user}', [ApiUserController::class, 'show']);
 
+    // Makes & Models
+    Route::get('makes', [MakeController::class, 'index']);
+    Route::get('makes/{id}', [MakeController::class, 'show']);
+    Route::get('models', [ModelController::class, 'index']);
+    Route::get('models/{id}', [ModelController::class, 'show']);
+    Route::get('makes/{makeId}/models', [ModelController::class, 'byMake']);
+
+    // Categories
+    Route::get('categories', [CategoryController::class, 'index']);
+    Route::get('categories/{id}', [CategoryController::class, 'show']);
+
+    // Conditions
+    Route::get('conditions', [ConditionController::class, 'index']);
+    Route::get('conditions/{id}', [ConditionController::class, 'show']);
+
+    // Fuel Types
+    Route::get('fuel-types', [FuelTypeController::class, 'index']);
+    Route::get('fuel-types/{id}', [FuelTypeController::class, 'show']);
+
+    // Transmissions
+    Route::get('transmissions', [TransmissionController::class, 'index']);
+    Route::get('transmissions/{id}', [TransmissionController::class, 'show']);
     // Public listings (no auth required - read only)
     Route::get('listings', [ListingController::class, 'index']);
     Route::get('listings/{id}', [ListingController::class, 'show']);
@@ -83,28 +105,6 @@ Route::prefix('v1')->group(function () {
         Route::put('auth/password', [AuthController::class, 'updatePassword']);
         Route::post('auth/logout', [AuthController::class, 'logout']);
 
-        // Makes & Models
-        Route::get('makes', [MakeController::class, 'index']);
-        Route::get('makes/{id}', [MakeController::class, 'show']);
-        Route::get('models', [ModelController::class, 'index']);
-        Route::get('models/{id}', [ModelController::class, 'show']);
-        Route::get('makes/{makeId}/models', [ModelController::class, 'byMake']);
-
-        // Categories
-        Route::get('categories', [CategoryController::class, 'index']);
-        Route::get('categories/{id}', [CategoryController::class, 'show']);
-
-        // Conditions
-        Route::get('conditions', [ConditionController::class, 'index']);
-        Route::get('conditions/{id}', [ConditionController::class, 'show']);
-
-        // Fuel Types
-        Route::get('fuel-types', [FuelTypeController::class, 'index']);
-        Route::get('fuel-types/{id}', [FuelTypeController::class, 'show']);
-
-        // Transmissions
-        Route::get('transmissions', [TransmissionController::class, 'index']);
-        Route::get('transmissions/{id}', [TransmissionController::class, 'show']);
 
         // Listings — write (auth required)
         Route::post('listings', [ListingController::class, 'store']);
