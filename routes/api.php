@@ -79,6 +79,7 @@ Route::prefix('v1')->group(function () {
     // Transmissions
     Route::get('transmissions', [TransmissionController::class, 'index']);
     Route::get('transmissions/{id}', [TransmissionController::class, 'show']);
+    
     // Public listings (no auth required - read only)
     Route::get('listings', [ListingController::class, 'index']);
     Route::get('listings/{id}', [ListingController::class, 'show']);

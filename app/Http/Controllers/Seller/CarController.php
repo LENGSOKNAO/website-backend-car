@@ -19,7 +19,7 @@ class CarController extends Controller
 {
     public function index(Request $request)
     {
-        $query = CarListing::with(['make', 'model', 'category', 'primaryImage'])
+        $query = CarListing::with(['make', 'model', 'category', 'primaryImage', 'images'])
             ->where('seller_id', auth()->id())
             ->withCount(['orders', 'preOrders']);
 
