@@ -85,44 +85,26 @@ Route::prefix('v1')->group(function () {
 
         // Makes & Models
         Route::get('makes', [MakeController::class, 'index']);
-        Route::post('makes', [MakeController::class, 'store']);
         Route::get('makes/{id}', [MakeController::class, 'show']);
-        Route::put('makes/{id}', [MakeController::class, 'update']);
-        Route::delete('makes/{id}', [MakeController::class, 'destroy']);
         Route::get('models', [ModelController::class, 'index']);
-        Route::post('models', [ModelController::class, 'store']);
         Route::get('models/{id}', [ModelController::class, 'show']);
-        Route::put('models/{id}', [ModelController::class, 'update']);
-        Route::delete('models/{id}', [ModelController::class, 'destroy']);
         Route::get('makes/{makeId}/models', [ModelController::class, 'byMake']);
 
         // Categories
         Route::get('categories', [CategoryController::class, 'index']);
-        Route::post('categories', [CategoryController::class, 'store']);
         Route::get('categories/{id}', [CategoryController::class, 'show']);
-        Route::put('categories/{id}', [CategoryController::class, 'update']);
-        Route::delete('categories/{id}', [CategoryController::class, 'destroy']);
 
         // Conditions
         Route::get('conditions', [ConditionController::class, 'index']);
-        Route::post('conditions', [ConditionController::class, 'store']);
         Route::get('conditions/{id}', [ConditionController::class, 'show']);
-        Route::put('conditions/{id}', [ConditionController::class, 'update']);
-        Route::delete('conditions/{id}', [ConditionController::class, 'destroy']);
 
         // Fuel Types
         Route::get('fuel-types', [FuelTypeController::class, 'index']);
-        Route::post('fuel-types', [FuelTypeController::class, 'store']);
         Route::get('fuel-types/{id}', [FuelTypeController::class, 'show']);
-        Route::put('fuel-types/{id}', [FuelTypeController::class, 'update']);
-        Route::delete('fuel-types/{id}', [FuelTypeController::class, 'destroy']);
 
         // Transmissions
         Route::get('transmissions', [TransmissionController::class, 'index']);
-        Route::post('transmissions', [TransmissionController::class, 'store']);
         Route::get('transmissions/{id}', [TransmissionController::class, 'show']);
-        Route::put('transmissions/{id}', [TransmissionController::class, 'update']);
-        Route::delete('transmissions/{id}', [TransmissionController::class, 'destroy']);
 
         // Listings — write (auth required)
         Route::post('listings', [ListingController::class, 'store']);
