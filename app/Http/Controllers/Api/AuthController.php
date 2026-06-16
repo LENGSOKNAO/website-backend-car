@@ -150,13 +150,17 @@ class AuthController extends ApiController
             return $this->error('Validation failed', 422, $validator->errors());
         }
 
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
+        try {
+            $status = Password::sendResetLink(
+                $request->only('email')
+            );
 
-        return $status === Password::RESET_LINK_SENT
-            ? $this->success(null, 'Password reset link sent to your email')
-            : $this->error('Unable to send reset link', 400);
+            return $status === Password::RESET_LINK_SENT
+                ? $this->success(null, 'Password reset link sent to your email')
+                : $this->error('Unable to send reset link', 400);
+        } catch (\Throwable $e) {
+            return $this->error($e->getMessage(), 500);
+        }
     }
 
     public function resetPassword(Request $request): JsonResponse
