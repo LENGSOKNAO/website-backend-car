@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserRole;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 class AuthController extends ApiController
 {
     public function update(Request $request)
@@ -135,6 +138,55 @@ class AuthController extends ApiController
     public function refresh()
     {
         return $this->respondWithToken(auth('api')->refresh());
+    }
+
+    public function forgotPassword(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->error('Validation failed', 422, $validator->errors());
+        }
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        return $status === Password::RESET_LINK_SENT
+            ? $this->success(null, 'Password reset link sent to your email')
+            : $this->error('Unable to send reset link', 400);
+    }
+
+    public function resetPassword(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->error('Validation failed', 422, $validator->errors());
+        }
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password),
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+            ? $this->success(null, 'Password reset successfully')
+            : $this->error('Invalid or expired reset token', 400);
     }
 
     protected function respondWithToken(string $token): JsonResponse

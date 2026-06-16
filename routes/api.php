@@ -51,6 +51,8 @@ Route::prefix('v1')->group(function () {
     Route::post('auth/login', [AuthController::class, 'login']);
     Route::post('auth/register', [AuthController::class, 'register']);
     Route::post('auth/refresh', [AuthController::class, 'refresh']);
+    Route::post('auth/forgot-password', [AuthController::class, 'forgotPassword']);
+    Route::post('auth/reset-password', [AuthController::class, 'resetPassword']);
 
     // Public users (no auth required - read only)
     Route::get('users', [ApiUserController::class, 'index']);
