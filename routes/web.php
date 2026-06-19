@@ -101,6 +101,11 @@ Route::get('/{id}', function ($id) {
 
 Route::inertia('/', 'welcome')->name('home');
 
+// Redirect /admin to dashboard for authenticated users
+Route::middleware('auth')->get('/admin', function () {
+    return Redirect::to('/admin/dashboard');
+});
+
 // Debug: show server vars (to diagnose Vercel REQUEST_URI issue)
 Route::get('debug-server', function () {
     return response()->json([
