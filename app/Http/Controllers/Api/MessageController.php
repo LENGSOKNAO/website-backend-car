@@ -1,0 +1,266 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Models\Conversation;
+use App\Models\Message;
+use App\Events\MessageCreated;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+
+class MessageController extends ApiController
+{
+    public function conversations()
+    {
+        $userId = auth()->id();
+
+        $conversations = Conversation::with(['sender', 'receiver', 'listing.make', 'listing.model'])
+            ->where('sender_id', $userId)
+            ->orWhere('receiver_id', $userId)
+            ->latest('last_message_at')
+            ->get()
+            ->map(function ($conv) use ($userId) {
+                $lastMsg = Message::where('conversation_id', $conv->id)->latest()->first();
+
+                return [
+                    'id' => $conv->id,
+                    'sender_id' => $conv->sender_id,
+                    'receiver_id' => $conv->receiver_id,
+                    'sender' => [
+                        'id' => $conv->sender->id,
+                        'full_name' => $conv->sender->full_name,
+                        'avatar_url' => $conv->sender->avatar_url,
+                    ],
+                    'receiver' => [
+                        'id' => $conv->receiver->id,
+                        'full_name' => $conv->receiver->full_name,
+                        'avatar_url' => $conv->receiver->avatar_url,
+                    ],
+                    'subject' => $conv->subject,
+                    'listing' => $conv->listing ? [
+                        'id' => $conv->listing->id,
+                        'make' => $conv->listing->make->name ?? '',
+                        'model' => $conv->listing->model->name ?? '',
+                        'year' => $conv->listing->year,
+                        'price' => $conv->listing->price,
+                    ] : null,
+                    'last_message' => $lastMsg?->content,
+                    'last_message_at' => $conv->last_message_at,
+                    'unread' => $lastMsg && $lastMsg->sender_id !== $userId && ! $lastMsg->read_at,
+                ];
+            });
+
+        return $this->success($conversations);
+    }
+
+    public function messages(string $id)
+    {
+        $userId = auth()->id();
+
+        $conversation = Conversation::where(function ($q) use ($userId) {
+            $q->where('sender_id', $userId)->orWhere('receiver_id', $userId);
+        })->findOrFail($id);
+
+        $messages = Message::with('sender')
+            ->where('conversation_id', $id)
+            ->oldest()
+            ->get()
+            ->map(fn ($m) => [
+                'id' => $m->id,
+                'sender_id' => $m->sender_id,
+                'sender' => [
+                    'id' => $m->sender->id,
+                    'full_name' => $m->sender->full_name,
+                    'avatar_url' => $m->sender->avatar_url,
+                ],
+                'content' => $m->content,
+                'read_at' => $m->read_at,
+                'created_at' => $m->created_at,
+                'is_mine' => $m->sender_id === $userId,
+            ]);
+
+        return $this->success($messages);
+    }
+
+    public function send(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'receiver_id' => 'required|exists:users,id',
+            'listing_id' => 'nullable|exists:car_listings,id',
+            'content' => 'required|string|max:5000',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->error('Validation failed', 422, $validator->errors());
+        }
+
+        $conversation = null;
+
+        if ($request->listing_id) {
+            $conversation = Conversation::where(function ($q) use ($request) {
+                $q->where([
+                    ['sender_id', auth()->id()],
+                    ['receiver_id', $request->receiver_id],
+                ])->orWhere([
+                    ['sender_id', $request->receiver_id],
+                    ['receiver_id', auth()->id()],
+                ]);
+            })->where('listing_id', $request->listing_id)->first();
+        }
+
+        if (! $conversation) {
+            $conversation = Conversation::create([
+                'sender_id' => auth()->id(),
+                'receiver_id' => $request->receiver_id,
+                'listing_id' => $request->listing_id ?? null,
+                'last_message_at' => now(),
+            ]);
+        }
+
+        $message = Message::create([
+            'conversation_id' => $conversation->id,
+            'sender_id' => auth()->id(),
+            'content' => $request->content,
+        ]);
+
+        $conversation->update(['last_message_at' => now()]);
+
+        try {
+            event(new MessageCreated($message));
+        } catch (\Throwable $e) {
+            Log::warning('Failed to broadcast message: ' . $e->getMessage());
+        }
+
+        $message->load('sender');
+
+        return $this->success([
+            'id' => $message->id,
+            'conversation_id' => $message->conversation_id,
+            'sender_id' => $message->sender_id,
+            'sender' => [
+                'id' => $message->sender->id,
+                'full_name' => $message->sender->full_name,
+                'avatar_url' => $message->sender->avatar_url,
+            ],
+            'content' => $message->content,
+            'read_at' => $message->read_at,
+            'created_at' => $message->created_at,
+        ], 'Message sent', 201);
+    }
+
+    public function reply(Request $request, string $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'content' => 'required|string|max:5000',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->error('Validation failed', 422, $validator->errors());
+        }
+
+        $conversation = Conversation::where(function ($q) {
+            $q->where('sender_id', auth()->id())->orWhere('receiver_id', auth()->id());
+        })->findOrFail($id);
+
+        $message = Message::create([
+            'conversation_id' => $conversation->id,
+            'sender_id' => auth()->id(),
+            'content' => $request->content,
+        ]);
+
+        $conversation->update(['last_message_at' => now()]);
+
+        try {
+            event(new MessageCreated($message));
+        } catch (\Throwable $e) {
+            Log::warning('Failed to broadcast reply: ' . $e->getMessage());
+        }
+
+        $message->load('sender');
+
+        return $this->success([
+            'id' => $message->id,
+            'conversation_id' => $message->conversation_id,
+            'sender_id' => $message->sender_id,
+            'sender' => [
+                'id' => $message->sender->id,
+                'full_name' => $message->sender->full_name,
+                'avatar_url' => $message->sender->avatar_url,
+            ],
+            'content' => $message->content,
+            'read_at' => $message->read_at,
+            'created_at' => $message->created_at,
+        ], 'Reply sent', 201);
+    }
+
+    public function markRead(string $id)
+    {
+        $conversation = Conversation::where(function ($q) {
+            $q->where('sender_id', auth()->id())->orWhere('receiver_id', auth()->id());
+        })->findOrFail($id);
+
+        $unreadMessages = Message::where('conversation_id', $conversation->id)
+            ->where('sender_id', '!=', auth()->id())
+            ->whereNull('read_at')
+            ->get();
+
+        // Mark messages as read
+        $unreadMessages->each->update(['read_at' => now()]);
+
+        // Broadcast read status for each message
+        foreach ($unreadMessages as $message) {
+            event(new \App\Events\MessageRead($message));
+        }
+
+        return $this->success(null, 'Marked as read');
+    }
+
+    public function edit(Request $request, string $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'content' => 'required|string|max:5000',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->error('Validation failed', 422, $validator->errors());
+        }
+
+        $message = Message::where('id', $id)
+            ->where('sender_id', auth()->id())
+            ->firstOrFail();
+
+        $message->update([
+            'content' => $request->content,
+            'edited_at' => now(),
+        ]);
+
+        $message->load('sender');
+
+        return $this->success([
+            'id' => $message->id,
+            'conversation_id' => $message->conversation_id,
+            'sender_id' => $message->sender_id,
+            'sender' => [
+                'id' => $message->sender->id,
+                'full_name' => $message->sender->full_name,
+                'avatar_url' => $message->sender->avatar_url,
+            ],
+            'content' => $message->content,
+            'read_at' => $message->read_at,
+            'edited_at' => $message->edited_at,
+            'created_at' => $message->created_at,
+        ], 'Message updated');
+    }
+
+    public function delete(string $id)
+    {
+        $message = Message::where('id', $id)
+            ->where('sender_id', auth()->id())
+            ->firstOrFail();
+
+        $message->delete();
+
+        return $this->success(null, 'Message deleted');
+    }
+}
